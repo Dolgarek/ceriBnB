@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER" spacing="10" xmlns:fx="http://javafx.com/fxml" fx:controller="com.ceri.ceribnb.LoginController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+    </padding>
+
+    <Label text="Connexion"/>
+    <GridPane hgap="10" vgap="10">
+        <Label text="Email:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+        <Label text="Mot de passe:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+        <TextField fx:id="emailField" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+        <PasswordField fx:id="passwordField" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+    </GridPane>
+    <Button text="Se connecter" onAction="#handleLoginButtonAction"/>
+    <Label fx:id="errorLabel" textFill="RED"/>
+</VBox>
