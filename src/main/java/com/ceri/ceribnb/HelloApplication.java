@@ -6,6 +6,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -16,14 +17,22 @@ public class HelloApplication extends Application {
     SejourGenerator sg = new SejourGenerator();
 
     List<Utilisateur> users = sg.getUtilisateurs();
-    List<Sejour> test = sg.genererSejours(10000, users);
+
+    List<Image> images;
+
+    List<Sejour> test;
 
     //public void start(Stage stage) throws IOException {
     @Override
     public void start(Stage primaryStage) throws IOException {
+        /*for (int i = 1; i <= 9; i++) {
+            Image image = new Image(getClass().getResourceAsStream("/img/" + i + ".png"));
+            images.add(image);
+        }
+        test = sg.genererSejours(10000, users, images);
         for (Sejour s: test) {
             System.out.println("Sejour = " + s.getTitre() + " " + s.getDescription() + " " + s.getPrix());
-        }
+        }*/
         /*FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 320, 240);
         stage.setTitle("Hello!");

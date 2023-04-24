@@ -8,6 +8,7 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.internal.MongoClientImpl;
+import javafx.scene.image.Image;
 import org.bson.Document;
 
 import java.util.ArrayList;
@@ -68,7 +69,7 @@ public class SejourGenerator {
         return users;
     }
 
-    public List<Sejour> genererSejours(int nombreSejours, List<Utilisateur> hotes) {
+    public List<Sejour> genererSejours(int nombreSejours, List<Utilisateur> hotes, List<Image> images) {
         List<Sejour> sejoursGeneres = new ArrayList<>();
         Random random = new Random();
 
@@ -111,6 +112,7 @@ public class SejourGenerator {
             sejour.setDateDebut(String.valueOf(new Date()));
             sejour.setDateFin(String.valueOf(new Date()));
             sejour.setHote(hotes.get(random.nextInt(hotes.size())));
+            sejour.setImage(images.get(random.nextInt(images.size())));
             sejoursGeneres.add(sejour);
         }
         return sejoursGeneres;

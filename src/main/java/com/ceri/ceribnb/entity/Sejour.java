@@ -1,5 +1,7 @@
 package com.ceri.ceribnb.entity;
 
+import javafx.scene.image.Image;
+
 public class Sejour {
     private String id;
     private String titre;
@@ -9,6 +11,8 @@ public class Sejour {
     private String dateDebut;
     private String dateFin;
     private Utilisateur hote;
+
+    private Image image;
 
     public Sejour() {
     }
@@ -75,5 +79,13 @@ public class Sejour {
 
     public void setHote(Utilisateur hote) {
         this.hote = hote;
+    }
+
+    public Image getImage() {
+        return image;
+    }
+
+    public void setImage(Image image) {
+        this.image = image;
     }
 }
