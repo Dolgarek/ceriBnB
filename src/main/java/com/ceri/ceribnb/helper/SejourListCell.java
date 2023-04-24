@@ -1,5 +1,6 @@
 package com.ceri.ceribnb.helper;
 
+import com.ceri.ceribnb.CartController;
 import com.ceri.ceribnb.ListSejourController;
 import com.ceri.ceribnb.entity.Sejour;
 import javafx.scene.control.Button;
@@ -10,10 +11,14 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 
 public class SejourListCell extends ListCell<Sejour> {
-    private ListSejourController controller;
+    private ListSejourController mainController;
+    private CartController cartController;
+    private boolean cartMode;
 
-    public SejourListCell(ListSejourController controller) {
-        this.controller = controller;
+    public SejourListCell(ListSejourController mainController, CartController cartController, boolean cartMode) {
+        this.mainController = mainController;
+        this.cartController = cartController;
+        this.cartMode = cartMode;
     }
 
     @Override
@@ -32,10 +37,17 @@ public class SejourListCell extends ListCell<Sejour> {
             imageView.setFitHeight(100); // Vous pouvez ajuster la taille de l'image ici
             imageView.setFitWidth(100);
 
-            Button addToCartButton = new Button("Ajouter au panier");
-            addToCartButton.setOnAction(e -> controller.addToCart(sejour));
+            Button actionButton = new Button();
 
-            hBox.getChildren().addAll(nomText, descriptifText, addToCartButton);
+            if (cartMode) {
+                actionButton.setText("Supprimer");
+                actionButton.setOnAction(e -> cartController.removeFromCart(sejour));
+            } else {
+                actionButton.setText("Ajouter au panier");
+                actionButton.setOnAction(e -> mainController.addToCart(sejour));
+            }
+
+            hBox.getChildren().addAll(nomText, descriptifText, actionButton);
             vBox.getChildren().addAll(hBox, imageView);
             setGraphic(vBox);
         }
