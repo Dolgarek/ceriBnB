@@ -3,7 +3,7 @@ package com.ceri.ceribnb.entity;
 import javafx.scene.image.Image;
 
 public class Sejour {
-    private String id;
+    public String id;
     private String titre;
     private String description;
     private String adresse;

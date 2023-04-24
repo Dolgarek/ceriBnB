@@ -82,10 +82,11 @@ public class SejourGenerator {
         MongoCollection<Document> prixCollection = database.getCollection(FIXTURE_PRIX);
         MongoCollection<Document> titreCollection = database.getCollection(FIXTURE_TITRE);
         MongoCollection<Document> sejourCollection = database.getCollection(SEJOUR_REEL);
-        MongoCollection<Document> reservation = database.getCollection(SEJOUR_REEL);
+        MongoCollection<Document> reservation = database.getCollection(RESERVATION);
 
         List<String> adresses = new ArrayList<>();
         List<String> codesZip = new ArrayList<>();
+        List<String> ville = new ArrayList<>();
         List<String> pays = new ArrayList<>();
         List<String> descriptions = new ArrayList<>();
         List<Double> prix = new ArrayList<>();
@@ -99,7 +100,8 @@ public class SejourGenerator {
             codesZip.add(doc.getString("code"));
         }
         for (Document doc : paysCollection.find()) {
-            pays.add(doc.getString("ville"));
+            ville.add(doc.getString("ville"));
+            pays.add(doc.getString("pays"));
             descriptions.add(doc.getString("description"));
         }
         for (Document doc : prixCollection.find()) {
@@ -123,7 +125,7 @@ public class SejourGenerator {
                     Image img = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/img/Question_mark_(black).png")));
                     s.setImage(img);
                 }
-
+                s.setId(doc.getObjectId("_id").toString());
                 s.setAdresse(doc.getString("adresse"));
                 s.setDescription(doc.getString("description"));
                 s.setTitre(doc.getString("titre"));
@@ -144,6 +146,7 @@ public class SejourGenerator {
 
         for (int i = 0; i < nombreSejours - sejours.size(); i++) {
             Sejour sejour = new Sejour();
+            sejour.setId(String.valueOf(i));
             sejour.setTitre(titres.get(random.nextInt(titres.size())));
             sejour.setDescription(descriptions.get(random.nextInt(descriptions.size())));
             sejour.setAdresse(adresses.get(random.nextInt(adresses.size())));
@@ -152,6 +155,8 @@ public class SejourGenerator {
             sejour.setDateFin(String.valueOf(new Date()));
             sejour.setHote(hotes.get(random.nextInt(hotes.size())));
             sejour.setImage(images.get(random.nextInt(images.size())));
+            sejour.setPays(pays.get(random.nextInt(pays.size())));
+            sejour.setVille(ville.get(random.nextInt(ville.size())));
             sejoursGeneres.add(sejour);
         }
         sejours.addAll(sejoursGeneres);
