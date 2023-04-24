@@ -1,6 +1,6 @@
 package com.ceri.ceribnb;
 
-import com.ceri.ceribnb.SejourGenerator;
+import com.ceri.ceribnb.helper.SejourGenerator;
 import com.ceri.ceribnb.entity.Sejour;
 import com.ceri.ceribnb.entity.Utilisateur;
 import com.ceri.ceribnb.helper.SejourListCell;
@@ -12,7 +12,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
-import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.io.IOException;
 import java.util.*;

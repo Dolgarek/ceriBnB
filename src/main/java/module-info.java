@@ -8,4 +8,6 @@ module com.ceri.ceribnb {
 
     opens com.ceri.ceribnb to javafx.fxml;
     exports com.ceri.ceribnb;
+    exports com.ceri.ceribnb.helper;
+    opens com.ceri.ceribnb.helper to javafx.fxml;
 }
