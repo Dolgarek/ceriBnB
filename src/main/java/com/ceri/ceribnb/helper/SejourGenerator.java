@@ -24,6 +24,7 @@ public class SejourGenerator {
     private static final String FIXTURE_PAYS = "fixturePays";
     private static final String FIXTURE_PRIX = "fixturePrix";
     private static final String FIXTURE_TITRE = "fixtureTitre";
+    private static final String SEJOUR_REEL = "SejourReel";
 
     private MongoClient mongoClient;
     private MongoDatabase database;
@@ -80,6 +81,7 @@ public class SejourGenerator {
         MongoCollection<Document> paysCollection = database.getCollection(FIXTURE_PAYS);
         MongoCollection<Document> prixCollection = database.getCollection(FIXTURE_PRIX);
         MongoCollection<Document> titreCollection = database.getCollection(FIXTURE_TITRE);
+        MongoCollection<Document> sejourCollection = database.getCollection(SEJOUR_REEL);
 
         List<String> adresses = new ArrayList<>();
         List<String> codesZip = new ArrayList<>();
@@ -87,6 +89,7 @@ public class SejourGenerator {
         List<String> descriptions = new ArrayList<>();
         List<Double> prix = new ArrayList<>();
         List<String> titres = new ArrayList<>();
+        List<Sejour> sejours = new ArrayList<>();
 
         for (Document doc : adresseCollection.find()) {
             adresses.add(doc.getString("adresse"));
@@ -105,7 +108,26 @@ public class SejourGenerator {
             titres.add(doc.getString("adresse"));
         }
 
-        for (int i = 0; i < nombreSejours; i++) {
+        for (Document doc : sejourCollection.find()) {
+            Sejour s = new Sejour();
+            Image img = new Image(getClass().getResourceAsStream("/Users/theoquezel-perron/Downloads/" + doc.getString("img")));
+            s.setImage(img);
+            s.setAdresse(doc.getString("adresse"));
+            s.setDescription(doc.getString("description"));
+            s.setTitre(doc.getString("titre"));
+            for (Utilisateur h : hotes) {
+                if (h.getId() == doc.getObjectId("_id").toString()) {
+                    s.setHote(h);
+                }
+            }
+            s.setPays(doc.getString("Pays"));
+            s.setVille(doc.getString("ville"));
+            s.setPrix(Double.valueOf(doc.getString("prix")));
+            s.setCodeZip(doc.getString("codeZip"));
+            sejours.add(s);
+        }
+
+        for (int i = 0; i < nombreSejours - sejours.size(); i++) {
             Sejour sejour = new Sejour();
             sejour.setTitre(titres.get(random.nextInt(titres.size())));
             sejour.setDescription(descriptions.get(random.nextInt(descriptions.size())));
@@ -117,6 +139,7 @@ public class SejourGenerator {
             sejour.setImage(images.get(random.nextInt(images.size())));
             sejoursGeneres.add(sejour);
         }
-        return sejoursGeneres;
+        sejours.addAll(sejoursGeneres);
+        return sejours;
     }
 }
