@@ -107,9 +107,9 @@ public class ListSejourController {
                 d2.append("description", s.getDescription());
                 d2.append("adresse", s.getAdresse());
                 d2.append("ville", s.getVille());
-                d2.append("pays", s.getPays());
+                d2.append("Pays", s.getPays());
                 d2.append("codeZip", s.getCodeZip());
-                d2.append("prix", s.getPrix());
+                d2.append("prix", String.valueOf(s.getPrix()));
                 d2.append("img", s.getImgPath());
                 d2.append("dateDebut", s.getDateDebut());
                 d2.append("dateFin", s.getDateFin());
