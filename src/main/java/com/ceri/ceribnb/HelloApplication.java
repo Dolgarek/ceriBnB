@@ -30,8 +30,13 @@ public class HelloApplication extends Application {
         stage.setScene(scene);
         stage.show();*/
 
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("login.fxml")));
+        /*Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("login.fxml")));
         primaryStage.setTitle("Connexion");
+        primaryStage.setScene(new Scene(root, 300, 275));
+        primaryStage.show();*/
+
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("list-sejour.fxml")));
+        primaryStage.setTitle("Liste");
         primaryStage.setScene(new Scene(root, 300, 275));
         primaryStage.show();
     }
