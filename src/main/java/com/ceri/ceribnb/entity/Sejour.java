@@ -15,6 +15,7 @@ public class Sejour {
     private String ville;
     private String pays;
     private Image image;
+    private String imgPath;
 
     public Sejour() {
     }
@@ -114,4 +115,14 @@ public class Sejour {
     public void setCodeZip(String codeZip) {
         this.codeZip = codeZip;
     }
+
+
+    public String getImgPath() {
+        return imgPath;
+    }
+
+    public void setImgPath(String imgPath) {
+        this.imgPath = imgPath;
+    }
+
 }

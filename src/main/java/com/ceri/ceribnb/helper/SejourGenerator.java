@@ -121,9 +121,11 @@ public class SejourGenerator {
                 if (file.exists()) {
                     Image img = new Image(file.toURI().toString());
                     s.setImage(img);
+                    s.setImgPath(doc.getString("img"));
                 } else {
                     Image img = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/img/Question_mark_(black).png")));
                     s.setImage(img);
+                    s.setImgPath(doc.getString("img"));
                 }
                 s.setId(doc.getObjectId("_id").toString());
                 s.setAdresse(doc.getString("adresse"));
@@ -154,7 +156,9 @@ public class SejourGenerator {
             sejour.setDateDebut(String.valueOf(new Date()));
             sejour.setDateFin(String.valueOf(new Date()));
             sejour.setHote(hotes.get(random.nextInt(hotes.size())));
-            sejour.setImage(images.get(random.nextInt(images.size())));
+            int imgRand = random.nextInt(images.size());
+            sejour.setImage(images.get(imgRand));
+            sejour.setImgPath(Integer.valueOf(imgRand) + ".png");
             sejour.setPays(pays.get(random.nextInt(pays.size())));
             sejour.setVille(ville.get(random.nextInt(ville.size())));
             sejoursGeneres.add(sejour);

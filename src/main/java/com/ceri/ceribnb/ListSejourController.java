@@ -103,24 +103,29 @@ public class ListSejourController {
                 Document d2 = new Document();
                 d2.append("_id", new ObjectId());
                 d2.append("hoteId", new ObjectId(s.getHote().getId()));
-                d2.append("titre", );
-                d2.append("description");
-                d2.append("adresse");
-                d2.append("ville");
-                d2.append("pays");
-                d2.append("codeZip");
-                d2.append("prix");
-                d2.append("img");
-                d2.append("dateDebut");
-                d2.append("dateFin");
+                d2.append("titre", s.getTitre());
+                d2.append("description", s.getDescription());
+                d2.append("adresse", s.getAdresse());
+                d2.append("ville", s.getVille());
+                d2.append("pays", s.getPays());
+                d2.append("codeZip", s.getCodeZip());
+                d2.append("prix", s.getPrix());
+                d2.append("img", s.getImgPath());
+                d2.append("dateDebut", s.getDateDebut());
+                d2.append("dateFin", s.getDateFin());
                 sejourReel.insertOne(d2);
+                r.setSejourId(d2.getObjectId("_id"));
 
             } else {
                 r.setSejourId(new ObjectId(s.getId()));
             }
-            r.setUserId(new ObjectId());
+            r.setUserId(new ObjectId(s.getHote().getId()));
             r.setStatus("EN ATTENTE");
-            Document d = Document.parse(gson.toJson(r));
+            Document d = new Document();
+            d.append("_id", new ObjectId());
+            d.append("sejourId", r.getSejourId());
+            d.append("userId", r.getUserId());
+            d.append("status", r.getStatus());
             reservation.insertOne(d);
         }
         sejours.removeAll(cartItems);
