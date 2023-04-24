@@ -1,4 +1,4 @@
-package com.ceri.ceribnb;
+package com.ceri.ceribnb.helper;
 
 import com.ceri.ceribnb.entity.Sejour;
 import com.ceri.ceribnb.entity.Utilisateur;
@@ -63,7 +63,9 @@ public class SejourGenerator {
 
         for (Document doc : collection.find()) {
             Utilisateur u = new Utilisateur(doc.getObjectId("_id").toString(), doc.getString("mail"), doc.getString("nom"), doc.getString("prenom"), doc.getString("adresse"), doc.getString("ville"), doc.getString("codeZip"), doc.getString("pays"), doc.getString("role"), doc.getString("password"));
-            users.add(u);
+            if (u.getRole().equals("hote")) {
+                users.add(u);
+            }
         }
 
         return users;
