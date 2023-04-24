@@ -11,10 +11,9 @@ import com.mongodb.client.internal.MongoClientImpl;
 import javafx.scene.image.Image;
 import org.bson.Document;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
+import java.io.File;
+import java.util.*;
+
 public class SejourGenerator {
 
     private static final String DATABASE_NAME = "CeriBnB";
@@ -110,8 +109,17 @@ public class SejourGenerator {
 
         for (Document doc : sejourCollection.find()) {
             Sejour s = new Sejour();
-            Image img = new Image(getClass().getResourceAsStream("/Users/theoquezel-perron/Downloads/" + doc.getString("img")));
-            s.setImage(img);
+            File file = new File("/Users/theoquezel-perron/Downloads/" + doc.getString("img"));
+            //Image img = new Image(getClass().getResourceAsStream("/Users/theoquezel-perron/Downloads/" + doc.getString("img")));
+            //s.setImage(img);
+            if (file.exists()) {
+                Image img = new Image(file.toURI().toString());
+                s.setImage(img);
+            } else {
+                Image img = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/img/Question_mark_(black).png")));
+                s.setImage(img);
+            }
+
             s.setAdresse(doc.getString("adresse"));
             s.setDescription(doc.getString("description"));
             s.setTitre(doc.getString("titre"));
@@ -124,6 +132,8 @@ public class SejourGenerator {
             s.setVille(doc.getString("ville"));
             s.setPrix(Double.valueOf(doc.getString("prix")));
             s.setCodeZip(doc.getString("codeZip"));
+            s.setDateDebut(doc.getString("dateDebut"));
+            s.setDateFin(doc.getString("dateFin"));
             sejours.add(s);
         }
 
