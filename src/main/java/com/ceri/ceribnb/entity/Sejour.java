@@ -11,7 +11,9 @@ public class Sejour {
     private String dateDebut;
     private String dateFin;
     private Utilisateur hote;
-
+    private String codeZip;
+    private String ville;
+    private String pays;
     private Image image;
 
     public Sejour() {
@@ -87,5 +89,29 @@ public class Sejour {
 
     public void setImage(Image image) {
         this.image = image;
+    }
+
+    public String getVille() {
+        return ville;
+    }
+
+    public void setVille(String ville) {
+        this.ville = ville;
+    }
+
+    public String getPays() {
+        return pays;
+    }
+
+    public void setPays(String pays) {
+        this.pays = pays;
+    }
+
+    public String getCodeZip() {
+        return codeZip;
+    }
+
+    public void setCodeZip(String codeZip) {
+        this.codeZip = codeZip;
     }
 }
