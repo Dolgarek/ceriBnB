@@ -11,6 +11,11 @@ target/
 *.iws
 *.iml
 *.ipr
+.idea/checkstyle-idea.xml
+.idea/consolestorage/flexible_search_region.json
+.idea/consolestorage/solr_region.json
+.idea/google-java-format.xml
+.idea/hybrisProjectSettings.xml
 
 ### Eclipse ###
 .apt_generated
