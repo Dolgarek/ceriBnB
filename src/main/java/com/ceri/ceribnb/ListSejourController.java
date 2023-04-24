@@ -14,6 +14,10 @@ import java.util.List;
 import javafx.scene.image.Image;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.HashSet;
+import java.util.Set;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
 public class ListSejourController {
 
@@ -30,7 +34,7 @@ public class ListSejourController {
 
         SejourGenerator sg = new SejourGenerator();
         List<Utilisateur> users = sg.getUtilisateurs();
-        List<Sejour> test = sg.genererSejours(10000, users);
+        List<Sejour> test = sg.genererSejours(10000, users, images);
 
         ObservableList<Sejour> sejours = FXCollections.observableArrayList(test);
 
@@ -40,5 +44,23 @@ public class ListSejourController {
 
     public Image getRandomImage() {
         return images.get(random.nextInt(images.size()));
+    }
+
+    private Set<Sejour> cart = new HashSet<>();
+
+    public void addToCart(Sejour sejour) {
+        if (cart.add(sejour)) {
+            Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle("Séjour ajouté au panier");
+            alert.setHeaderText(null);
+            alert.setContentText("Le séjour a été ajouté au panier.");
+            alert.showAndWait();
+        } else {
+            Alert alert = new Alert(AlertType.WARNING);
+            alert.setTitle("Séjour déjà dans le panier");
+            alert.setHeaderText(null);
+            alert.setContentText("Le séjour est déjà présent dans le panier.");
+            alert.showAndWait();
+        }
     }
 }
