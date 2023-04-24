@@ -3,16 +3,16 @@ package com.ceri.ceribnb.helper;
 import com.ceri.ceribnb.entity.Sejour;
 import com.ceri.ceribnb.entity.Utilisateur;
 import com.mongodb.*;
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.*;
 import com.mongodb.client.internal.MongoClientImpl;
 import javafx.scene.image.Image;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 import java.io.File;
 import java.util.*;
+
+import static com.mongodb.client.model.Filters.eq;
 
 public class SejourGenerator {
 
@@ -24,6 +24,7 @@ public class SejourGenerator {
     private static final String FIXTURE_PRIX = "fixturePrix";
     private static final String FIXTURE_TITRE = "fixtureTitre";
     private static final String SEJOUR_REEL = "SejourReel";
+    private static final String RESERVATION = "Reservation";
 
     private MongoClient mongoClient;
     private MongoDatabase database;
@@ -81,6 +82,7 @@ public class SejourGenerator {
         MongoCollection<Document> prixCollection = database.getCollection(FIXTURE_PRIX);
         MongoCollection<Document> titreCollection = database.getCollection(FIXTURE_TITRE);
         MongoCollection<Document> sejourCollection = database.getCollection(SEJOUR_REEL);
+        MongoCollection<Document> reservation = database.getCollection(SEJOUR_REEL);
 
         List<String> adresses = new ArrayList<>();
         List<String> codesZip = new ArrayList<>();
@@ -108,33 +110,36 @@ public class SejourGenerator {
         }
 
         for (Document doc : sejourCollection.find()) {
-            Sejour s = new Sejour();
-            File file = new File("/Users/theoquezel-perron/Downloads/" + doc.getString("img"));
-            //Image img = new Image(getClass().getResourceAsStream("/Users/theoquezel-perron/Downloads/" + doc.getString("img")));
-            //s.setImage(img);
-            if (file.exists()) {
-                Image img = new Image(file.toURI().toString());
-                s.setImage(img);
-            } else {
-                Image img = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/img/Question_mark_(black).png")));
-                s.setImage(img);
-            }
-
-            s.setAdresse(doc.getString("adresse"));
-            s.setDescription(doc.getString("description"));
-            s.setTitre(doc.getString("titre"));
-            for (Utilisateur h : hotes) {
-                if (h.getId() == doc.getObjectId("_id").toString()) {
-                    s.setHote(h);
+            Document rslt = reservation.find(eq("sejourId", doc.get("_id"))).first();
+            if (rslt == null) {
+                Sejour s = new Sejour();
+                File file = new File("/Users/theoquezel-perron/Downloads/" + doc.getString("img"));
+                //Image img = new Image(getClass().getResourceAsStream("/Users/theoquezel-perron/Downloads/" + doc.getString("img")));
+                //s.setImage(img);
+                if (file.exists()) {
+                    Image img = new Image(file.toURI().toString());
+                    s.setImage(img);
+                } else {
+                    Image img = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/img/Question_mark_(black).png")));
+                    s.setImage(img);
                 }
+
+                s.setAdresse(doc.getString("adresse"));
+                s.setDescription(doc.getString("description"));
+                s.setTitre(doc.getString("titre"));
+                for (Utilisateur h : hotes) {
+                    if (h.getId() == doc.getObjectId("_id").toString()) {
+                        s.setHote(h);
+                    }
+                }
+                s.setPays(doc.getString("Pays"));
+                s.setVille(doc.getString("ville"));
+                s.setPrix(Double.valueOf(doc.getString("prix")));
+                s.setCodeZip(doc.getString("codeZip"));
+                s.setDateDebut(doc.getString("dateDebut"));
+                s.setDateFin(doc.getString("dateFin"));
+                sejours.add(s);
             }
-            s.setPays(doc.getString("Pays"));
-            s.setVille(doc.getString("ville"));
-            s.setPrix(Double.valueOf(doc.getString("prix")));
-            s.setCodeZip(doc.getString("codeZip"));
-            s.setDateDebut(doc.getString("dateDebut"));
-            s.setDateFin(doc.getString("dateFin"));
-            sejours.add(s);
         }
 
         for (int i = 0; i < nombreSejours - sejours.size(); i++) {
