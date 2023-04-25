@@ -3,34 +3,32 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="833.0" prefWidth="1445.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ceri.ceribnb.ListSejourController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="833.0" prefWidth="1445.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ceri.ceribnb.BookingRequestsController">
    <top>
       <HBox prefHeight="64.0" prefWidth="1452.0" style="-fx-background-color: #2c4186;" BorderPane.alignment="CENTER">
          <children>
-            <Label alignment="CENTER" prefHeight="70.0" prefWidth="129.0" text="CeriBnB" textFill="WHITE">
+            <Button mnemonicParsing="false" onAction="#switchToHomepageScene" prefHeight="70.0" prefWidth="129.0" style="-fx-background-color: transparent;" text="CeriBnB" textFill="WHITE">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
                <font>
                   <Font name="System Bold" size="24.0" />
                </font>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor></Label>
+            </Button>
             <HBox prefHeight="64.0" prefWidth="170.0" />
-            <TextField alignment="CENTER" prefHeight="27.0" prefWidth="850.0" promptText="Recherche">
+            <TextField alignment="CENTER" disable="true" prefHeight="27.0" prefWidth="850.0" promptText="Recherche">
                <HBox.margin>
                   <Insets top="20.0" />
                </HBox.margin>
             </TextField>
-            <Button mnemonicParsing="false" prefHeight="26.0">
+            <Button disable="true" mnemonicParsing="false" prefHeight="26.0">
                <HBox.margin>
                   <Insets top="20.0" />
                </HBox.margin>
@@ -45,7 +43,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#switchToBookingRequestsScene" prefHeight="64.0" prefWidth="85.0" style="-fx-background-color: transparent; -fx-alignment: bottom-center; -fx-content-display: top;" text="Demandes" textAlignment="CENTER" textFill="WHITE">
+            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="64.0" prefWidth="85.0" style="-fx-background-color: transparent; -fx-alignment: bottom-center; -fx-content-display: top;" text="Demandes" textAlignment="CENTER" textFill="WHITE">
                <HBox.margin>
                   <Insets left="5.0" />
                </HBox.margin>
@@ -93,44 +91,4 @@
          </children>
       </HBox>
    </top>
-   <center>
-      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
-         <children>
-            <HBox prefHeight="35.0" prefWidth="1445.0">
-               <children>
-                  <Button mnemonicParsing="false" prefHeight="35.0" prefWidth="722.0" text="Tous les séjours">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                  </Button>
-                  <Button mnemonicParsing="false" prefHeight="35.0" prefWidth="722.0" text="Mes séjours proposés">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets left="1.0" />
-                     </HBox.margin>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                  </Button>
-               </children>
-               <VBox.margin>
-                  <Insets left="5.0" right="5.0" top="5.0" />
-               </VBox.margin>
-            </HBox>
-            <ListView fx:id="sejourListView" prefHeight="713.0" prefWidth="1445.0">
-               <VBox.margin>
-                  <Insets left="5.0" right="5.0" top="5.0" />
-               </VBox.margin>
-            </ListView>
-         </children>
-      </VBox>
-   </center>
 </BorderPane>
