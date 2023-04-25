@@ -30,7 +30,7 @@ public class HelloApplication extends Application {
         //TODO: Remove after dev
         GlobalData.getInstance().setLoggedInUser(users.get(0));
 
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("list-reservation.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("authentified-view.fxml"));
 
         Scene scene = new Scene(fxmlLoader.load(), 1445, 833);
         stage.setTitle("CeriBnB");
