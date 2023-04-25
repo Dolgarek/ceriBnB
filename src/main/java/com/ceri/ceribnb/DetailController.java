@@ -49,6 +49,10 @@ public class DetailController {
 
   private ListSejourController mainController;
 
+  private CartController cartController;
+
+  private ReservationController reservationController;
+
   private Sejour current;
 
   @FXML
@@ -137,15 +141,55 @@ public class DetailController {
   }
 
   public void switchToCart(ActionEvent event) throws IOException {
-    this.mainController.showCart(event);
-  }
+    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("cart.fxml"));
+    Parent root = fxmlLoader.load();
+    cartController = fxmlLoader.getController();
+    cartController.setMainController(this.mainController);
+    stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+    scene = new Scene(root, 1445, 833);
+    stage.setTitle("Mon panier");
+    stage.setScene(scene);
+    stage.show();  }
 
   public void switchToBooking(ActionEvent event) throws IOException {
-    this.mainController.showReservation(event);
+    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("list-reservation.fxml"));
+    Parent root = fxmlLoader.load();
+    reservationController = fxmlLoader.getController();
+    reservationController.setMainController(this.mainController);
+    stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+    scene = new Scene(root, 1445, 833);
+    stage.setTitle("Demandes de réservation");
+    stage.setScene(scene);
+    stage.show();
+  }
+
+  public void switchToBookingRequestsScene(ActionEvent event) throws IOException {
+    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("booking-requests-view.fxml"));
+    Parent root = fxmlLoader.load();
+    stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+    scene = new Scene(root, 1445, 833);
+    stage.setTitle("Demandes de réservation");
+    stage.setScene(scene);
+    stage.show();
+  }
+
+  public void switchToCalendarScene(ActionEvent event) throws IOException {
+    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("calendar-view.fxml"));
+    Parent root = fxmlLoader.load();
+    stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+    scene = new Scene(root, 1445, 833);
+    stage.setTitle("Demandes de réservation");
+    stage.setScene(scene);
+    stage.show();
   }
 
   public void switchToHomepageScene(ActionEvent event) throws IOException {
-    Parent root = FXMLLoader.load(getClass().getResource("authentified-view.fxml"));
+    Parent root = null;
+    if (GlobalData.getInstance().getLoggedInUser().getRole().equals("hote")) {
+      root = FXMLLoader.load(getClass().getResource("authentified-view-host.fxml"));
+    } else if (GlobalData.getInstance().getLoggedInUser().getRole().equals("voyageur")) {
+      root = FXMLLoader.load(getClass().getResource("authentified-view.fxml"));
+    }
     stage = (Stage)((Node)event.getSource()).getScene().getWindow();
     scene = new Scene(root, 1445, 833);
     stage.setScene(scene);
