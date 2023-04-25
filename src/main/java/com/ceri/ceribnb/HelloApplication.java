@@ -28,9 +28,9 @@ public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         //TODO: Remove after dev
-        GlobalData.getInstance().setLoggedInUser(users.get(0));
+        //GlobalData.getInstance().setLoggedInUser(users.get(0));
 
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("authentified-view-host.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("unauthentified-view.fxml"));
 
         Scene scene = new Scene(fxmlLoader.load(), 1445, 833);
         stage.setTitle("CeriBnB");

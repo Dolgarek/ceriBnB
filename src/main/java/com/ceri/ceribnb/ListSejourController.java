@@ -85,6 +85,21 @@ public class ListSejourController {
         stage.show();
     }
 
+    public void switchToDetailHostScene(ActionEvent event, Sejour sejour) throws IOException {
+        GlobalData.getInstance().setDetails(sejour);
+        //Parent root = FXMLLoader.load(getClass().getResource("detail-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("detail-view-host.fxml"));
+        Parent root = fxmlLoader.load();
+        detailController = fxmlLoader.getController();
+        detailController.setMainController(this);
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        scene = new Scene(root, 1445, 833);
+        stage.setTitle("CeriBnB");
+        stage.setScene(scene);
+        stage.show();
+    }
+
+
     public void switchToCalendarScene(ActionEvent event) throws IOException {
         //Parent root = FXMLLoader.load(getClass().getResource("detail-view.fxml"));
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("calendar-view.fxml"));

@@ -33,7 +33,16 @@ public class LoginController {
 
     public void switchToHomepageScene(ActionEvent event) throws IOException {
         GlobalData.getInstance().setDetails(null);
-        Parent root = FXMLLoader.load(getClass().getResource("unauthentified-view.fxml"));
+        Parent root = null;
+        if (GlobalData.getInstance().getLoggedInUser() != null) {
+            if (GlobalData.getInstance().getLoggedInUser().getRole().equals("hote")) {
+                root = FXMLLoader.load(getClass().getResource("authentified-view-host.fxml"));
+            } else if (GlobalData.getInstance().getLoggedInUser().getRole().equals("voyageur")) {
+                root = FXMLLoader.load(getClass().getResource("authentified-view.fxml"));
+            }
+        } else {
+            root = FXMLLoader.load(getClass().getResource("unauthentified-view.fxml"));
+        }
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root, 1445, 833);
         stage.setScene(scene);
@@ -65,15 +74,23 @@ public class LoginController {
     }
 
     private void ouvrirFenetrePrincipale(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader;
+
+        Parent root = null;
         if (GlobalData.getInstance().getDetails() == null) {
             // Load the new FXML file
-            fxmlLoader = new FXMLLoader(getClass().getResource("authentified-view.fxml"));
+            if (GlobalData.getInstance().getLoggedInUser().getRole().equals("hote")) {
+                root = FXMLLoader.load(getClass().getResource("authentified-view-host.fxml"));
+            } else if (GlobalData.getInstance().getLoggedInUser().getRole().equals("voyageur")) {
+                root = FXMLLoader.load(getClass().getResource("authentified-view.fxml"));
+            }
         } else {
             // Load the new FXML file
-            fxmlLoader = new FXMLLoader(getClass().getResource("detail-view.fxml"));
+            if (GlobalData.getInstance().getLoggedInUser().getRole().equals("hote")) {
+                root = FXMLLoader.load(getClass().getResource("detail-view-host.fxml"));
+            } else if (GlobalData.getInstance().getLoggedInUser().getRole().equals("voyageur")) {
+                root = FXMLLoader.load(getClass().getResource("detail-view.fxml"));
+            }
         }
-        Parent root = fxmlLoader.load();
 
         // Create a new Scene object
         Scene homepageAuthentified = new Scene(root);

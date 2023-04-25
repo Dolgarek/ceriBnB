@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Point3D?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="833.0" prefWidth="1445.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ceri.ceribnb.DetailController">
+   <top>
+      <HBox prefHeight="64.0" prefWidth="1452.0" style="-fx-background-color: #2c4186;" BorderPane.alignment="CENTER">
+         <children>
+            <Button mnemonicParsing="false" onAction="#switchToHomepageScene" prefHeight="70.0" prefWidth="127.0" style="-fx-background-color: transparent;" text="CeriBnB" textFill="WHITE">
+               <font>
+                  <Font size="24.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <HBox prefHeight="64.0" prefWidth="170.0" />
+            <TextField alignment="CENTER" disable="true" prefHeight="27.0" prefWidth="850.0" promptText="Recherche">
+               <HBox.margin>
+                  <Insets top="20.0" />
+               </HBox.margin>
+            </TextField>
+            <Button disable="true" mnemonicParsing="false" prefHeight="26.0">
+               <HBox.margin>
+                  <Insets top="20.0" />
+               </HBox.margin>
+               <graphic>
+                  <ImageView fitHeight="150.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../icon/loupe-icone.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button fx:id="booking_requests" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#switchToBookingRequestsScene" prefHeight="64.0" prefWidth="85.0" style="-fx-background-color: transparent; -fx-alignment: bottom-center; -fx-content-display: top;" text="Demandes" textAlignment="CENTER" textFill="WHITE">
+               <HBox.margin>
+                  <Insets left="5.0" />
+               </HBox.margin>
+               <graphic>
+                  <ImageView fitHeight="35.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../icon/bell.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button fx:id="calendar" mnemonicParsing="false" onAction="#switchToCalendarScene" prefHeight="64.0" prefWidth="81.0" style="-fx-background-color: transparent; -fx-alignment: bottom-left; -fx-content-display: TOP;" text="Calendrier" textFill="WHITE">               <HBox.margin>
+                  <Insets right="5.0" />
+               </HBox.margin>
+               <graphic>
+                  <ImageView fitHeight="36.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../icon/calendar.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button fx:id="authentified_username" alignment="BOTTOM_LEFT" mnemonicParsing="false" prefHeight="70.0" prefWidth="77.0" style="-fx-alignment: bottom-left; -fx-content-display: top; -fx-background-color: transparent;" text="Username TODO" textAlignment="CENTER" textFill="WHITE">
+               <graphic>
+                  <ImageView fx:id="authentified_user_image" fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../icon/unknown_user.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <HBox.margin>
+                  <Insets right="8.0" />
+               </HBox.margin>
+            </Button>
+         </children>
+      </HBox>
+   </top>
+   <center>
+      <FlowPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <VBox prefHeight="700.0" prefWidth="637.0">
+               <children>
+                  <Label fx:id="titreSejour" text="Titre du séjour">
+                     <font>
+                        <Font size="48.0" />
+                     </font>
+                  </Label>
+                  <Line endX="480.97222900390625" endY="1.6568305492401123" startX="-100.0" />
+                  <ImageView fx:id="imgSejour" fitHeight="426.0" fitWidth="637.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@appart.jpeg" />
+                     </image>
+                     <VBox.margin>
+                        <Insets top="20.0" />
+                     </VBox.margin>
+                  </ImageView>
+                  <Label text="Description">
+                     <font>
+                        <Font size="48.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="20.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Line endX="480.97222900390625" endY="1.6568305492401123" startX="-100.0" />
+                  <TextArea fx:id="descSejour" editable="false" prefHeight="200.0" prefWidth="200.0" text="Description de l'annonce ">
+                     <VBox.margin>
+                        <Insets top="20.0" />
+                     </VBox.margin>
+                  </TextArea>
+               </children>
+            </VBox>
+            <VBox prefHeight="640.0" prefWidth="147.0" />
+            <VBox prefHeight="651.0" prefWidth="445.0">
+               <children>
+                  <Label fx:id="prixSejour" text="Prix">
+                     <font>
+                        <Font size="36.0" />
+                     </font>
+                  </Label>
+                  <HBox prefHeight="100.0" prefWidth="245.0">
+                     <children>
+                        <Label style="-fx-border-style: solid; -fx-alignment: bottom-left; -fx-content-display: bottom;" text="Du :">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                           <padding>
+                              <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
+                           </padding>
+                           <HBox.margin>
+                              <Insets right="5.0" />
+                           </HBox.margin>
+                           <graphic>
+                              <Label fx:id="debutSejour" text="12 Septembre 2023">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                           </graphic>
+                        </Label>
+                        <Label style="-fx-border-style: solid; -fx-alignment: bottom-left; -fx-content-display: bottom;" text="Au :">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                           <padding>
+                              <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
+                           </padding>
+                           <HBox.margin>
+                              <Insets left="5.0" />
+                           </HBox.margin>
+                           <graphic>
+                              <Label fx:id="finSejour" text="15 Septembre 2023">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                           </graphic>
+                        </Label>
+                     </children>
+                     <VBox.margin>
+                        <Insets top="20.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <Button fx:id="add_to_cart" disable="true" mnemonicParsing="false" onAction="#addToCart" prefHeight="92.0" prefWidth="446.0" text="Ajouter au panier">
+                     <font>
+                        <Font size="48.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <Line endX="344.29290771484375" endY="1.6033649444580078E-5" startX="-100.0">
+                     <VBox.margin>
+                        <Insets top="20.0" />
+                     </VBox.margin>
+                     <rotationAxis>
+                        <Point3D />
+                     </rotationAxis>
+                  </Line>
+                  <Label text="Commentaires">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                     <padding>
+                        <Insets top="20.0" />
+                     </padding>
+                  </Label>
+                  <VBox>
+                     <VBox prefHeight="140.0" prefWidth="446.0">
+                        <children>
+                           <HBox>
+                              <padding>
+                                 <Insets right="50.0" />
+                              </padding>
+                              <children>
+                                 <TextField fx:id="titleComms" disable="true" prefHeight="26.0" prefWidth="446.0" promptText="Titre du commentaire" />
+                              </children>
+                              <VBox.margin>
+                                 <Insets />
+                              </VBox.margin>
+                           </HBox>
+                           <HBox prefHeight="100.0" prefWidth="200.0">
+                              <children>
+                                 <TextArea fx:id="contentComms" disable="true" prefHeight="66.0" prefWidth="446.0" promptText="Ecrivez votre commentaire ici" />
+                                 <VBox prefHeight="200.0" prefWidth="100.0">
+                                    <children>
+                                       <Region disable="true" prefHeight="200.0" prefWidth="200.0" />
+                                       <Button fx:id="sendComms" alignment="CENTER" contentDisplay="CENTER" disable="true" mnemonicParsing="false" onAction="#addCommentaire" prefHeight="45.0" prefWidth="50.0" style="-fx-background-color: transparent;">
+                                          <graphic>
+                                             <ImageView fitHeight="19.0" fitWidth="54.0" pickOnBounds="true" preserveRatio="true">
+                                                <image>
+                                                   <Image url="@../../../icon/send.png" />
+                                                </image>
+                                             </ImageView>
+                                          </graphic>
+                                          <cursor>
+                                             <Cursor fx:constant="HAND" />
+                                          </cursor>
+                                       </Button>
+                                       <Region disable="true" prefHeight="200.0" prefWidth="50.0" />
+                                    </children>
+                                 </VBox>
+                              </children>
+                              <VBox.margin>
+                                 <Insets top="2.0" />
+                              </VBox.margin>
+                           </HBox>
+                        </children>
+                        <VBox.margin>
+                           <Insets top="10.0" />
+                        </VBox.margin>
+                     </VBox>
+                  </VBox>
+                  <ListView fx:id="commentaireListView" prefHeight="227.0" prefWidth="446.0">
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin></ListView>
+               </children>
+            </VBox>
+         </children>
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </padding>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+      </FlowPane>
+   </center>
+</BorderPane>

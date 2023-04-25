@@ -3,6 +3,7 @@ package com.ceri.ceribnb.helper;
 import com.ceri.ceribnb.CartController;
 import com.ceri.ceribnb.ListSejourController;
 import com.ceri.ceribnb.entity.Sejour;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -73,7 +74,12 @@ public class SejourListCell extends ListCell<Sejour> {
                 if (GlobalData.getInstance().getLoggedInUser() != null) {
                     actionButton.setOnAction(e -> {
                         try {
-                            mainController.switchToDetailScene(e, sejour);
+                            if (GlobalData.getInstance().getLoggedInUser().getRole().equals("hote")) {
+                                mainController.switchToDetailHostScene(e, sejour);
+                            } else if (GlobalData.getInstance().getLoggedInUser().getRole().equals("voyageur")) {
+                                mainController.switchToDetailScene(e, sejour);
+                            }
+                            // mainController.switchToDetailScene(e, sejour);
                         } catch (IOException ex) {
                             throw new RuntimeException(ex);
                         }
