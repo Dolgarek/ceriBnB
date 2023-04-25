@@ -8,7 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class CalendarController {
+public class BookingRequestsController {
 
   private Stage stage;
   private Scene scene;
@@ -23,15 +23,14 @@ public class CalendarController {
     stage.show();
   }
 
-  public void switchToBookingRequestsScene(ActionEvent event) throws IOException {
+  public void switchToCalendarScene(ActionEvent event) throws IOException {
     //Parent root = FXMLLoader.load(getClass().getResource("detail-view.fxml"));
-    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("booking-requests-view.fxml"));
+    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("calendar-view.fxml"));
     Parent root = fxmlLoader.load();
     stage = (Stage)((Node)event.getSource()).getScene().getWindow();
     scene = new Scene(root, 1445, 833);
-    stage.setTitle("Demandes de réservation");
+    stage.setTitle("Calendrier");
     stage.setScene(scene);
     stage.show();
   }
-
 }
