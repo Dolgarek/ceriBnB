@@ -242,7 +242,7 @@ public class ListSejourController {
             } else {
                 r.setSejourId(new ObjectId(s.getId()));
             }
-            r.setUserId(new ObjectId(s.getHote().getId()));
+            r.setUserId(new ObjectId(GlobalData.getInstance().getLoggedInUser().getId()));
             r.setStatus("EN ATTENTE");
             Document d = new Document();
             d.append("_id", new ObjectId());
