@@ -3,6 +3,8 @@ package com.ceri.ceribnb;
 import com.ceri.ceribnb.entity.Utilisateur;
 import java.io.IOException;
 import java.util.EventObject;
+
+import com.ceri.ceribnb.helper.GlobalData;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -30,6 +32,7 @@ public class LoginController {
     private Parent root;
 
     public void switchToHomepageScene(ActionEvent event) throws IOException {
+        GlobalData.getInstance().setDetails(null);
         Parent root = FXMLLoader.load(getClass().getResource("unauthentified-view.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root, 1445, 833);
@@ -46,7 +49,8 @@ public class LoginController {
         Utilisateur utilisateur = verifierIdentifiants(email, password);
         if (utilisateur != null) {
             // Connecter l'utilisateur et ouvrir la fenêtre principale
-            ouvrirFenetrePrincipale(event, utilisateur);
+            GlobalData.getInstance().setLoggedInUser(utilisateur);
+            ouvrirFenetrePrincipale(event);
         } else {
             errorLabel.setText("Email ou mot de passe incorrect");
         }
@@ -60,10 +64,15 @@ public class LoginController {
         return u;
     }
 
-    private void ouvrirFenetrePrincipale(ActionEvent event, Utilisateur utilisateur) throws IOException {
-        System.out.println("User " + utilisateur.getNom() + utilisateur.getPrenom() + utilisateur.toString());
-        // Load the new FXML file
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("authentified-view.fxml"));
+    private void ouvrirFenetrePrincipale(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader;
+        if (GlobalData.getInstance().getDetails() == null) {
+            // Load the new FXML file
+            fxmlLoader = new FXMLLoader(getClass().getResource("authentified-view.fxml"));
+        } else {
+            // Load the new FXML file
+            fxmlLoader = new FXMLLoader(getClass().getResource("detail-view.fxml"));
+        }
         Parent root = fxmlLoader.load();
 
         // Create a new Scene object

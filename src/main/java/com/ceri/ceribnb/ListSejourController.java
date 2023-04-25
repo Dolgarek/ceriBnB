@@ -54,6 +54,12 @@ public class ListSejourController {
     private Scene scene;
     private Parent root;
 
+    @FXML
+    private Button add_to_cart;
+
+    @FXML
+    private Button user_book;
+
     public void switchToLoginFormScene(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("login.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -61,25 +67,34 @@ public class ListSejourController {
         stage.setScene(scene);
         stage.show();
     }
+
+    public void switchToDetailScene(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("detail-view.fxml"));
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        scene = new Scene(root, 1445, 833);
+        stage.setScene(scene);
+        stage.show();
+    }
     
     public void initialize() {
-        reservationButton.setAlignment(Pos.CENTER);
-        reservationButton.setLayoutX(150);
-        reservationButton.setLayoutY(0);
-        reservationButton.setOnAction(e -> {
-            try {
-                showReservation(e);
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
-        });
-        cartButton.setOnAction(e -> {
-            try {
-                showCart(e);
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
-        });
+        if (user_book != null) {
+            user_book.setOnAction(e -> {
+                try {
+                    showReservation(e);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            });
+        }
+        if (add_to_cart != null) {
+            add_to_cart.setOnAction(e -> {
+                try {
+                    showCart(e);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            });
+        }
         for (int i = 1; i <= 9; i++) {
             Image image = new Image(getClass().getResourceAsStream("/img/" + i + ".png"));
             images.add(image);
@@ -181,13 +196,6 @@ public class ListSejourController {
         // Retournez à la liste des séjours après avoir validé la commande.
         return sejours;
     }
-
-    @FXML
-    private Button cartButton;
-
-    @FXML
-    private Button reservationButton;
-
 
     @FXML
     private void showCart(ActionEvent event) throws IOException {

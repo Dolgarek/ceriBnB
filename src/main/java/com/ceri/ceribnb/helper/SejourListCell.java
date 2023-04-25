@@ -17,6 +17,8 @@ import javafx.scene.text.Text;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 
+import java.io.IOException;
+
 public class SejourListCell extends ListCell<Sejour> {
     private ListSejourController mainController;
     private CartController cartController;
@@ -67,7 +69,25 @@ public class SejourListCell extends ListCell<Sejour> {
                 actionButton.setOnAction(e -> cartController.removeFromCart(sejour));
             } else {
                 actionButton.setText("Voir les détails de l'annonce");
-                actionButton.setOnAction(e -> mainController.addToCart(sejour));
+                actionButton.setId("sejour_" + sejour.getId());
+                if (GlobalData.getInstance().getLoggedInUser() != null) {
+                    actionButton.setOnAction(e -> {
+                        try {
+                            mainController.switchToDetailScene(e);
+                        } catch (IOException ex) {
+                            throw new RuntimeException(ex);
+                        }
+                    });
+                } else {
+                    actionButton.setOnAction(e -> {
+                        try {
+                            GlobalData.getInstance().setDetails(sejour);
+                            mainController.switchToLoginFormScene(e);
+                        } catch (IOException ex) {
+                            throw new RuntimeException(ex);
+                        }
+                    });
+                }
             }
 
             vBox1.getChildren().addAll(titre, pays, ville);

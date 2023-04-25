@@ -14,6 +14,14 @@ public class GlobalData {
 
     private Set<Sejour> cart;
 
+    private Utilisateur loggedInUser;
+
+    private Sejour details;
+
+    public void setLoggedInUser(Utilisateur loggedInUser) {
+        this.loggedInUser = loggedInUser;
+    }
+
     private GlobalData() {}
 
     public static GlobalData getInstance() {
@@ -34,5 +42,13 @@ public class GlobalData {
     public Set<Sejour> getCart() { return cart; }
 
     public void setCart(Set<Sejour> cart) { this.cart = cart; }
+
+    public static void setInstance(GlobalData instance) { GlobalData.instance = instance; }
+
+    public Utilisateur getLoggedInUser() { return loggedInUser; }
+
+    public Sejour getDetails() { return details; }
+
+    public void setDetails(Sejour details) { this.details = details; }
 }
 
