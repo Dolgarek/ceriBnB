@@ -78,7 +78,7 @@ public class ReservationController {
         this.mainController = mainController;
         MongoDatabase database = DabatabaseHandler.instanciateDatabase();
         MongoCollection<Document> reservation = database.getCollection("Reservation");
-        for (Document doc : reservation.find(eq("userId", new ObjectId("642fc683392ed9f00e00790d")))) {
+        for (Document doc : reservation.find(eq("userId", new ObjectId(GlobalData.getInstance().getLoggedInUser().getId())))) {
             Reservation r = new Reservation();
             r.setSejourId(doc.getObjectId("sejourId"));
             r.setUserId(doc.getObjectId("userId"));
