@@ -26,7 +26,13 @@ public class HelloApplication extends Application {
 
     //public void start(Stage stage) throws IOException {
     @Override
-    public void start(Stage primaryStage) throws IOException {
+    public void start(Stage stage) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("unauthentified-view.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 1445, 833);
+        stage.setTitle("CeriBnB");
+        stage.setScene(scene);
+        stage.show();
+
         /*for (int i = 1; i <= 9; i++) {
             Image image = new Image(getClass().getResourceAsStream("/img/" + i + ".png"));
             images.add(image);
@@ -46,10 +52,10 @@ public class HelloApplication extends Application {
         primaryStage.setScene(new Scene(root, 300, 275));
         primaryStage.show();*/
 
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("list-sejour.fxml")));
+        /*Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("list-sejour.fxml")));
         primaryStage.setTitle("Liste");
         primaryStage.setScene(new Scene(root, 300, 275));
-        primaryStage.show();
+        primaryStage.show();*/
     }
 
     public static void main(String[] args) {

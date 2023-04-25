@@ -50,7 +50,18 @@ public class ListSejourController {
     private ObservableList<Sejour> sejours;
 
     private Set<Sejour> cartItems = new HashSet<>();
+    private Stage stage;
+    private Scene scene;
+    private Parent root;
 
+    public void switchToLoginFormScene(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("login.fxml"));
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        scene = new Scene(root, 1445, 833);
+        stage.setScene(scene);
+        stage.show();
+    }
+    
     public void initialize() {
         reservationButton.setAlignment(Pos.CENTER);
         reservationButton.setLayoutX(150);
