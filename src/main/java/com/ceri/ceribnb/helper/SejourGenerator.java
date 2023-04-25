@@ -10,6 +10,7 @@ import org.bson.Document;
 import org.bson.types.ObjectId;
 
 import java.io.File;
+import java.text.DateFormat;
 import java.util.*;
 
 import static com.mongodb.client.model.Filters.eq;
@@ -75,6 +76,10 @@ public class SejourGenerator {
     public List<Sejour> genererSejours(int nombreSejours, List<Utilisateur> hotes, List<Image> images) {
         List<Sejour> sejoursGeneres = new ArrayList<>();
         Random random = new Random();
+        DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT, Locale.FRENCH);
+        Date date = new Date();
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
 
         MongoCollection<Document> adresseCollection = database.getCollection(FIXTURE_ADRESSE);
         MongoCollection<Document> codeZipCollection = database.getCollection(FIXTURE_CODEZIP);
@@ -146,6 +151,8 @@ public class SejourGenerator {
             }
         }
 
+        GlobalData.getInstance().setNumberGenerated(nombreSejours - sejours.size());
+
         for (int i = 0; i < nombreSejours - sejours.size(); i++) {
             Sejour sejour = new Sejour();
             sejour.setId(String.valueOf(i));
@@ -153,8 +160,13 @@ public class SejourGenerator {
             sejour.setDescription(descriptions.get(random.nextInt(descriptions.size())));
             sejour.setAdresse(adresses.get(random.nextInt(adresses.size())));
             sejour.setPrix(prix.get(random.nextInt(prix.size())));
-            sejour.setDateDebut(String.valueOf(new Date()));
-            sejour.setDateFin(String.valueOf(new Date()));
+            c.add(Calendar.DATE, random.nextInt(15) * -1);
+            sejour.setDateDebut(df.format(c.getTime()));
+            c.setTime(date);
+            c.add(Calendar.DATE, random.nextInt(15));
+            sejour.setDateFin(df.format(c.getTime()));
+            c.setTime(date);
+            sejour.setCodeZip(codesZip.get(random.nextInt(codesZip.size())));
             sejour.setHote(hotes.get(random.nextInt(hotes.size())));
             int imgRand = random.nextInt(images.size());
             sejour.setImage(images.get(imgRand));

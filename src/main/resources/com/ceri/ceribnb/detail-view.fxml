@@ -51,7 +51,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Button fx:id="user_book" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="64.0" prefWidth="120.0" style="-fx-background-color: transparent; -fx-alignment: bottom-center; -fx-content-display: top;" text="Réservations" textAlignment="CENTER">
+            <Button fx:id="user_book" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#switchToBooking" prefHeight="64.0" prefWidth="120.0" style="-fx-background-color: transparent; -fx-alignment: bottom-center; -fx-content-display: top;" text="Réservations" textAlignment="CENTER">
                <HBox.margin>
                   <Insets left="5.0" />
                </HBox.margin>
@@ -66,7 +66,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Button mnemonicParsing="false" prefHeight="64.0" prefWidth="55.0" style="-fx-background-color: transparent; -fx-alignment: bottom-left; -fx-content-display: TOP;" text="Panier">               <HBox.margin>
+            <Button fx:id="cart" mnemonicParsing="false" onAction="#switchToCart" prefHeight="64.0" prefWidth="55.0" style="-fx-background-color: transparent; -fx-alignment: bottom-left; -fx-content-display: TOP;" text="Panier">               <HBox.margin>
                   <Insets right="5.0" />
                </HBox.margin>
                <graphic>
@@ -101,15 +101,15 @@
    <center>
       <FlowPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <VBox prefHeight="200.0" prefWidth="100.0">
+            <VBox prefHeight="700.0" prefWidth="637.0">
                <children>
-                  <Label text="Titre du séjour">
+                  <Label fx:id="titreSejour" text="Titre du séjour">
                      <font>
                         <Font size="48.0" />
                      </font>
                   </Label>
                   <Line endX="480.97222900390625" endY="1.6568305492401123" startX="-100.0" />
-                  <ImageView fitHeight="426.0" fitWidth="637.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="imgSejour" fitHeight="426.0" fitWidth="637.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@appart.jpeg" />
                      </image>
@@ -126,17 +126,17 @@
                      </VBox.margin>
                   </Label>
                   <Line endX="480.97222900390625" endY="1.6568305492401123" startX="-100.0" />
-                  <TextArea editable="false" prefHeight="200.0" prefWidth="200.0" text="Description de l'annonce ">
+                  <TextArea fx:id="descSejour" editable="false" prefHeight="200.0" prefWidth="200.0" text="Description de l'annonce ">
                      <VBox.margin>
                         <Insets top="20.0" />
                      </VBox.margin>
                   </TextArea>
                </children>
             </VBox>
-            <VBox prefHeight="651.0" prefWidth="147.0" />
+            <VBox prefHeight="640.0" prefWidth="147.0" />
             <VBox prefHeight="651.0" prefWidth="445.0">
                <children>
-                  <Label text="Prix">
+                  <Label fx:id="prixSejour" text="Prix">
                      <font>
                         <Font size="36.0" />
                      </font>
@@ -151,13 +151,13 @@
                               <Insets />
                            </opaqueInsets>
                            <padding>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                              <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
                            </padding>
                            <HBox.margin>
                               <Insets right="5.0" />
                            </HBox.margin>
                            <graphic>
-                              <Label text="12 Septembre 2023">
+                              <Label fx:id="debutSejour" text="12 Septembre 2023">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
@@ -169,13 +169,13 @@
                               <Font size="24.0" />
                            </font>
                            <padding>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                              <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
                            </padding>
                            <HBox.margin>
                               <Insets left="5.0" />
                            </HBox.margin>
                            <graphic>
-                              <Label text="15 Septembre 2023">
+                              <Label fx:id="finSejour" text="15 Septembre 2023">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
@@ -187,7 +187,7 @@
                         <Insets top="20.0" />
                      </VBox.margin>
                   </HBox>
-                  <Button fx:id="add_to_cart" onAction="#addToCart" mnemonicParsing="false" prefHeight="92.0" prefWidth="446.0" text="Ajouter au panier">
+                  <Button fx:id="add_to_cart" mnemonicParsing="false" onAction="#addToCart" prefHeight="92.0" prefWidth="446.0" text="Ajouter au panier">
                      <font>
                         <Font size="48.0" />
                      </font>
@@ -211,33 +211,53 @@
                         <Insets top="20.0" />
                      </padding>
                   </Label>
-                  <HBox prefHeight="100.0" prefWidth="200.0">
-                     <children>
-                        <TextArea prefHeight="66.0" prefWidth="446.0" promptText="Ecrivez votre commentaire ici" />
-                        <VBox prefHeight="200.0" prefWidth="100.0">
-                           <children>
-                              <Region prefHeight="200.0" prefWidth="200.0" />
-                              <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="45.0" prefWidth="50.0" style="-fx-background-color: transparent;">
-                                 <graphic>
-                                    <ImageView fitHeight="19.0" fitWidth="54.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../../../icon/send.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
-                                 <cursor>
-                                    <Cursor fx:constant="HAND" />
-                                 </cursor>
-                              </Button>
-                              <Region prefHeight="200.0" prefWidth="50.0" />
-                           </children>
-                        </VBox>
-                     </children>
-                     <VBox.margin>
-                        <Insets top="10.0" />
-                     </VBox.margin>
-                  </HBox>
-                  <ListView prefHeight="200.0" prefWidth="200.0">
+                  <VBox>
+                     <VBox prefHeight="140.0" prefWidth="446.0">
+                        <children>
+                           <HBox>
+                              <padding>
+                                 <Insets right="50.0" />
+                              </padding>
+                              <children>
+                                 <TextField fx:id="titleComms" prefHeight="26.0" prefWidth="446.0" promptText="Titre du commentaire" />
+                              </children>
+                              <VBox.margin>
+                                 <Insets />
+                              </VBox.margin>
+                           </HBox>
+                           <HBox prefHeight="100.0" prefWidth="200.0">
+                              <children>
+                                 <TextArea fx:id="contentComms" prefHeight="66.0" prefWidth="446.0" promptText="Ecrivez votre commentaire ici" />
+                                 <VBox prefHeight="200.0" prefWidth="100.0">
+                                    <children>
+                                       <Region prefHeight="200.0" prefWidth="200.0" />
+                                       <Button fx:id="sendComms" onAction="#addCommentaire" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="45.0" prefWidth="50.0" style="-fx-background-color: transparent;">
+                                          <graphic>
+                                             <ImageView fitHeight="19.0" fitWidth="54.0" pickOnBounds="true" preserveRatio="true">
+                                                <image>
+                                                   <Image url="@../../../icon/send.png" />
+                                                </image>
+                                             </ImageView>
+                                          </graphic>
+                                          <cursor>
+                                             <Cursor fx:constant="HAND" />
+                                          </cursor>
+                                       </Button>
+                                       <Region prefHeight="200.0" prefWidth="50.0" />
+                                    </children>
+                                 </VBox>
+                              </children>
+                              <VBox.margin>
+                                 <Insets top="2.0" />
+                              </VBox.margin>
+                           </HBox>
+                        </children>
+                        <VBox.margin>
+                           <Insets top="10.0" />
+                        </VBox.margin>
+                     </VBox>
+                  </VBox>
+                  <ListView fx:id="commentaireListView" prefHeight="227.0" prefWidth="446.0">
                      <VBox.margin>
                         <Insets top="10.0" />
                      </VBox.margin></ListView>
@@ -247,6 +267,9 @@
          <padding>
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
          </padding>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
       </FlowPane>
    </center>
 </BorderPane>
