@@ -47,6 +47,8 @@ public class ListSejourController {
 
     private ReservationController resaController;
 
+    private DetailController detailController;
+
     private ObservableList<Sejour> sejours;
 
     private Set<Sejour> cartItems = new HashSet<>();
@@ -68,8 +70,13 @@ public class ListSejourController {
         stage.show();
     }
 
-    public void switchToDetailScene(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("detail-view.fxml"));
+    public void switchToDetailScene(ActionEvent event, Sejour sejour) throws IOException {
+        GlobalData.getInstance().setDetails(sejour);
+        //Parent root = FXMLLoader.load(getClass().getResource("detail-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("detail-view.fxml"));
+        Parent root = fxmlLoader.load();
+        detailController = fxmlLoader.getController();
+        detailController.setMainController(this);
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root, 1445, 833);
         stage.setScene(scene);

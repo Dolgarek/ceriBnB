@@ -73,7 +73,7 @@ public class SejourListCell extends ListCell<Sejour> {
                 if (GlobalData.getInstance().getLoggedInUser() != null) {
                     actionButton.setOnAction(e -> {
                         try {
-                            mainController.switchToDetailScene(e);
+                            mainController.switchToDetailScene(e, sejour);
                         } catch (IOException ex) {
                             throw new RuntimeException(ex);
                         }

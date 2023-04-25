@@ -187,7 +187,7 @@
                         <Insets top="20.0" />
                      </VBox.margin>
                   </HBox>
-                  <Button fx:id="add_to_cart" mnemonicParsing="false" prefHeight="92.0" prefWidth="446.0" text="Ajouter au panier">
+                  <Button fx:id="add_to_cart" onAction="#addToCart" mnemonicParsing="false" prefHeight="92.0" prefWidth="446.0" text="Ajouter au panier">
                      <font>
                         <Font size="48.0" />
                      </font>
