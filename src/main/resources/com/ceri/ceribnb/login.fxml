@@ -18,7 +18,7 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="833.0" prefWidth="1445.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ceri.ceribnb.LoginController">
     <top>
-        <HBox prefHeight="64.0" prefWidth="1452.0" style="-fx-background-color: black; -fx-opacity: 0.5;" BorderPane.alignment="CENTER">
+        <HBox prefHeight="64.0" prefWidth="1452.0" style="-fx-background-color: #eba83b;" BorderPane.alignment="CENTER">
             <children>
             <Button mnemonicParsing="false" onAction="#switchToHomepageScene" prefHeight="70.0" prefWidth="127.0" style="-fx-background-color: transparent;" text="CeriBnB" textFill="WHITE">
                <font>
@@ -29,12 +29,12 @@
                </cursor>
             </Button>
                 <HBox prefHeight="70.0" prefWidth="150.0" />
-                <TextField alignment="CENTER" prefHeight="27.0" prefWidth="885.0" promptText="Recherche">
+                <TextField alignment="CENTER" disable="true" prefHeight="27.0" prefWidth="885.0" promptText="Recherche">
                     <HBox.margin>
                         <Insets top="20.0" />
                     </HBox.margin>
                 </TextField>
-                <Button mnemonicParsing="false" prefHeight="26.0">
+                <Button disable="true" mnemonicParsing="false" prefHeight="26.0">
                     <HBox.margin>
                         <Insets top="20.0" />
                     </HBox.margin>
@@ -50,7 +50,7 @@
                     </cursor>
                 </Button>
                 <HBox prefHeight="72.0" prefWidth="154.0" HBox.hgrow="ALWAYS" />
-                <Button alignment="BOTTOM_LEFT" mnemonicParsing="false" prefHeight="54.0" prefWidth="77.0" style="-fx-alignment: bottom-left; -fx-content-display: top;" text="Connexion" textAlignment="CENTER">
+                <Button alignment="BOTTOM_LEFT" mnemonicParsing="false" prefHeight="54.0" prefWidth="77.0" style="-fx-alignment: bottom-left; -fx-content-display: top; -fx-background-color: transparent;" text="Connexion" textAlignment="CENTER" textFill="WHITE">
                     <graphic>
                         <ImageView fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                             <image>
