@@ -3,6 +3,7 @@ package com.ceri.ceribnb;
 import com.ceri.ceribnb.entity.Reservation;
 import com.ceri.ceribnb.entity.Sejour;
 import com.ceri.ceribnb.helper.DabatabaseHandler;
+import com.ceri.ceribnb.helper.GlobalData;
 import com.ceri.ceribnb.helper.ReservationListCell;
 import com.ceri.ceribnb.helper.SejourListCell;
 import com.mongodb.client.MongoCollection;
@@ -99,5 +100,23 @@ public class ReservationController {
         resaListView.setCellFactory(resa -> new ReservationListCell(mainController, this));
     };
 
+    public void logout(ActionEvent e) throws IOException {
+        GlobalData.getInstance().setOwnSejour(null);
+        GlobalData.getInstance().setDetails(null);
+        GlobalData.getInstance().setLoggedInUser(null);
+        GlobalData.getInstance().setCart(null);
 
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("unauthentified-view.fxml"));
+        Parent root = fxmlLoader.load();
+
+        // Create a new Scene object
+        Scene unauthentifiedView = new Scene(root);
+
+        // Get the current stage
+        Stage currentStage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+
+        // Set the new scene to the current stage
+        currentStage.setScene(unauthentifiedView);
+        currentStage.show();
+    }
 }
