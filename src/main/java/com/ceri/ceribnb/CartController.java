@@ -28,7 +28,7 @@ public class CartController {
 
     public void close(ActionEvent event) throws IOException {
         Stage cartStage = (Stage) validateOrderButton.getScene().getWindow();
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("list-sejour.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("authentified-view.fxml"));
         Parent root = fxmlLoader.load();
 
         // Create a new Scene object
@@ -55,7 +55,7 @@ public class CartController {
 
     public void validateOrder(ActionEvent event) throws IOException {
         mainController.validateOrder();
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("list-sejour.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("authentified-view.fxml"));
         Parent root = fxmlLoader.load();
 
         // Create a new Scene object

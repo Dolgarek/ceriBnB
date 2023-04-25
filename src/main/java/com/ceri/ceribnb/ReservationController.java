@@ -43,7 +43,7 @@ public class ReservationController {
 
     public void close(ActionEvent event) throws IOException {
         // Load the new FXML file
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("list-sejour.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("authentified-view.fxml"));
         Parent root = fxmlLoader.load();
 
         // Create a new Scene object
@@ -56,10 +56,6 @@ public class ReservationController {
         currentStage.setScene(sejourList);
         currentStage.show();
     }
-    /*public void close() {
-        Stage cartStage = (Stage) closeButton.getScene().getWindow();
-        cartStage.close();
-    }*/
 
     public void setMainController(ListSejourController mainController) {
         this.mainController = mainController;
