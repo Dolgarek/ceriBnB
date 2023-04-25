@@ -21,6 +21,9 @@
                <font>
                   <Font size="24.0" />
                </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
             </Button>
                 <HBox prefHeight="64.0" prefWidth="170.0" />
                 <TextField alignment="CENTER" disable="true" prefHeight="27.0" prefWidth="850.0" promptText="Recherche">
