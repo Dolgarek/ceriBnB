@@ -98,7 +98,7 @@
          <children>
             <HBox prefHeight="35.0" prefWidth="1445.0">
                <children>
-                  <Button mnemonicParsing="false" prefHeight="35.0" prefWidth="722.0" text="Tous les séjours">
+                  <Button fx:id="all_sejour" mnemonicParsing="false" prefHeight="35.0" prefWidth="722.0" text="Tous les séjours">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -109,7 +109,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
-                  <Button mnemonicParsing="false" prefHeight="35.0" prefWidth="722.0" text="Mes séjours proposés">
+                  <Button fx:id="my_sejour" mnemonicParsing="false" prefHeight="35.0" prefWidth="722.0" text="Mes séjours proposés">
                      <font>
                         <Font size="18.0" />
                      </font>
