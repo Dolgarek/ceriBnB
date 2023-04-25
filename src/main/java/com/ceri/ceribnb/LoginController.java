@@ -1,10 +1,17 @@
 package com.ceri.ceribnb;
 
+import com.ceri.ceribnb.entity.Sejour;
 import com.ceri.ceribnb.entity.Utilisateur;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.EventObject;
+import java.util.List;
 
+import com.ceri.ceribnb.helper.DabatabaseHandler;
 import com.ceri.ceribnb.helper.GlobalData;
+import com.ceri.ceribnb.helper.SejourGenerator;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,6 +23,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import org.bson.Document;
+import org.bson.types.ObjectId;
+
+import static com.mongodb.client.model.Filters.eq;
 
 public class LoginController {
     @FXML
@@ -50,6 +61,11 @@ public class LoginController {
         if (utilisateur != null) {
             // Connecter l'utilisateur et ouvrir la fenêtre principale
             GlobalData.getInstance().setLoggedInUser(utilisateur);
+            if (utilisateur.getRole() == "hote") {
+                SejourGenerator sg = new SejourGenerator();
+                GlobalData.getInstance().setOwnSejour(sg.getSejourReelByUser(new ObjectId(utilisateur.getId())));
+                System.out.println(GlobalData.getInstance().getOwnSejour().size());
+            }
             ouvrirFenetrePrincipale(event);
         } else {
             errorLabel.setText("Email ou mot de passe incorrect");

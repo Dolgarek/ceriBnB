@@ -62,6 +62,14 @@ public class ListSejourController {
     @FXML
     private Button user_book;
 
+    @FXML
+    private Button all_sejour;
+
+    @FXML
+    private Button my_sejour;
+
+    public int state = 0;
+
     public void switchToLoginFormScene(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("login.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -108,6 +116,11 @@ public class ListSejourController {
     }
     
     public void initialize() {
+        //TODO: Supprimer après;
+        if (GlobalData.getInstance().getOwnSejour() == null) {
+         SejourGenerator sg = new SejourGenerator();
+         GlobalData.getInstance().setOwnSejour(sg.getSejourReelByUser(new ObjectId(GlobalData.getInstance().getLoggedInUser().getId())));
+        }
         if (user_book != null) {
             user_book.setOnAction(e -> {
                 try {
@@ -125,6 +138,12 @@ public class ListSejourController {
                     throw new RuntimeException(ex);
                 }
             });
+        }
+        if (all_sejour != null) {
+            all_sejour.setOnAction(e -> displayAllSejour(e));
+        }
+        if (my_sejour != null) {
+            my_sejour.setOnAction(e -> displayMySejour(e));
         }
         for (int i = 1; i <= 9; i++) {
             Image image = new Image(getClass().getResourceAsStream("/img/" + i + ".png"));
@@ -299,5 +318,25 @@ public class ListSejourController {
 
     }*/
 
+    public void displayAllSejour(ActionEvent e) {
+        if (state == 1) {
+            sejours = FXCollections.observableArrayList(GlobalData.getInstance().getSejours());
+
+            sejourListView.setItems(sejours);
+            sejourListView.setCellFactory(sejour -> new SejourListCell(this, cartController, false));
+            state = 0;
+        }
+    }
+
+    public void displayMySejour(ActionEvent e) {
+        if (state == 0) {
+            sejours = FXCollections.observableArrayList(GlobalData.getInstance().getOwnSejour());
+
+            sejourListView.setItems(sejours);
+            sejourListView.setCellFactory(sejour -> new SejourListCell(this, cartController, false));
+
+            state = 1;
+        }
+    }
 
 }

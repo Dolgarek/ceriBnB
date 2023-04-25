@@ -10,7 +10,10 @@ import java.util.Set;
 
 public class GlobalData {
     private static GlobalData instance;
+
     private List<Sejour> sejours;
+
+    private List<Sejour> ownSejour;
 
     private Set<Sejour> cart;
 
@@ -58,5 +61,8 @@ public class GlobalData {
 
     public void setNumberGenerated(int numberGenerated) { this.numberGenerated = numberGenerated; }
 
+    public List<Sejour> getOwnSejour() { return ownSejour; }
+
+    public void setOwnSejour(List<Sejour> ownSejour) { this.ownSejour = ownSejour; }
 }
 
