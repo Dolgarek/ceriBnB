@@ -1,6 +1,11 @@
 package com.ceri.ceribnb;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import com.ceri.ceribnb.entity.Sejour;
 import com.ceri.ceribnb.helper.GlobalData;
@@ -61,13 +66,19 @@ public class DetailController {
   @FXML
   private Button sendComms;
 
-  public void initialize() {
+  public void initialize() throws ParseException {
+    DateFormat sourceFormat = new SimpleDateFormat("dd/MM/yyyy");
     current = GlobalData.getInstance().getDetails();
+    Date dateDebut = sourceFormat.parse(current.getDateDebut());
+    Date dateFin = sourceFormat.parse(current.getDateFin());
+    long diffInMillies = Math.abs(dateFin.getTime() - dateDebut.getTime());
+    long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+    String realValue = String.valueOf(diff * current.getPrix());
     titreSejour.setText(current.getTitre());
     imgSejour.setImage(current.getImage());
     descSejour.setText(current.getAdresse() + "\n" + current.getPays() + ", " + current.getVille() + ", " + current.getCodeZip() + "\n\n" + current.getDescription());
     descSejour.setWrapText(true);
-    prixSejour.setText("Prix: " + String.valueOf(current.getPrix()) + "€/nuits");
+    prixSejour.setText("Prix: " + String.valueOf(current.getPrix()) + "€/nuits" + " ~ " + realValue + "€");
     debutSejour.setText(current.getDateDebut());
     finSejour.setText(current.getDateFin());
   }
