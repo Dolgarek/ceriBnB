@@ -51,7 +51,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Button fx:id="user_book" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="64.0" prefWidth="120.0" style="-fx-background-color: transparent; -fx-alignment: bottom-center; -fx-content-display: top;" text="Réservations" textAlignment="CENTER">
+            <Button fx:id="user_book" onAction="#switchToBooking" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="64.0" prefWidth="120.0" style="-fx-background-color: transparent; -fx-alignment: bottom-center; -fx-content-display: top;" text="Réservations" textAlignment="CENTER">
                <HBox.margin>
                   <Insets left="5.0" />
                </HBox.margin>
@@ -66,7 +66,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Button mnemonicParsing="false" prefHeight="64.0" prefWidth="55.0" style="-fx-background-color: transparent; -fx-alignment: bottom-left; -fx-content-display: TOP;" text="Panier">               <HBox.margin>
+            <Button fx:id="cart" onAction="#switchToCart" mnemonicParsing="false" prefHeight="64.0" prefWidth="55.0" style="-fx-background-color: transparent; -fx-alignment: bottom-left; -fx-content-display: TOP;" text="Panier">               <HBox.margin>
                   <Insets right="5.0" />
                </HBox.margin>
                <graphic>

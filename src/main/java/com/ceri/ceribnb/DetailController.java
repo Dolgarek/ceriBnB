@@ -27,6 +27,20 @@ public class DetailController {
   @FXML
   private Button add_to_cart;
 
+  @FXML
+  private Button cart;
+
+  @FXML
+  private Button user_book;
+
+  public void switchToCart(ActionEvent event) throws IOException {
+    this.mainController.showCart(event);
+  }
+
+  public void switchToBooking(ActionEvent event) throws IOException {
+    this.mainController.showReservation(event);
+  }
+
   public void switchToHomepageScene(ActionEvent event) throws IOException {
     Parent root = FXMLLoader.load(getClass().getResource("authentified-view.fxml"));
     stage = (Stage)((Node)event.getSource()).getScene().getWindow();

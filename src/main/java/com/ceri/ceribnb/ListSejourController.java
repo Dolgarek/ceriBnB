@@ -205,7 +205,7 @@ public class ListSejourController {
     }
 
     @FXML
-    private void showCart(ActionEvent event) throws IOException {
+    public void showCart(ActionEvent event) throws IOException {
         // Load the new FXML file
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("cart.fxml"));
         Parent root = fxmlLoader.load();
@@ -240,7 +240,7 @@ public class ListSejourController {
     }*/
 
     @FXML
-    private void showReservation(ActionEvent event) throws IOException {
+    public void showReservation(ActionEvent event) throws IOException {
         // Load the new FXML file
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("list-reservation.fxml"));
         Parent root = fxmlLoader.load();
