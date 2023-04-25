@@ -257,7 +257,7 @@
                         </VBox.margin>
                      </VBox>
                   </VBox>
-                  <ListView fx:id="comms" prefHeight="227.0" prefWidth="446.0">
+                  <ListView fx:id="commentaireListView" prefHeight="227.0" prefWidth="446.0">
                      <VBox.margin>
                         <Insets top="10.0" />
                      </VBox.margin></ListView>

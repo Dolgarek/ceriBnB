@@ -4,15 +4,23 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
+import com.ceri.ceribnb.entity.Commentaire;
 import com.ceri.ceribnb.entity.Sejour;
+import com.ceri.ceribnb.entity.Utilisateur;
+import com.ceri.ceribnb.helper.CommentairesListCell;
 import com.ceri.ceribnb.helper.DabatabaseHandler;
 import com.ceri.ceribnb.helper.GlobalData;
+import com.ceri.ceribnb.helper.SejourListCell;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -26,11 +34,18 @@ import javafx.stage.Stage;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
+import static com.mongodb.client.model.Filters.eq;
+
 public class DetailController {
 
   private Stage stage;
   private Scene scene;
   private Parent root;
+
+  @FXML
+  ListView<Commentaire> commentaireListView;
+
+  private ObservableList<Commentaire> commentaires;
 
   private ListSejourController mainController;
 
@@ -73,6 +88,10 @@ public class DetailController {
   private Button sendComms;
 
   public void initialize() throws ParseException {
+    MongoDatabase database = DabatabaseHandler.instanciateDatabase();
+    MongoCollection<Document> commentaire = database.getCollection("Commentaire");
+    MongoCollection<Document> user = database.getCollection("Utilisateur");
+
     DateFormat sourceFormat = new SimpleDateFormat("dd/MM/yyyy");
     current = GlobalData.getInstance().getDetails();
     Date dateDebut = sourceFormat.parse(current.getDateDebut());
@@ -80,6 +99,9 @@ public class DetailController {
     long diffInMillies = Math.abs(dateFin.getTime() - dateDebut.getTime());
     long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
     String realValue = String.valueOf(diff * current.getPrix());
+
+    contentComms.setWrapText(true);
+
     titreSejour.setText(current.getTitre());
     imgSejour.setImage(current.getImage());
     descSejour.setText(current.getAdresse() + "\n" + current.getPays() + ", " + current.getVille() + ", " + current.getCodeZip() + "\n\n" + current.getDescription());
@@ -87,6 +109,28 @@ public class DetailController {
     prixSejour.setText("Prix: " + String.valueOf(current.getPrix()) + "€/nuits" + " ~ " + realValue + "€");
     debutSejour.setText(current.getDateDebut());
     finSejour.setText(current.getDateFin());
+
+    List<Commentaire> commentaireList = new ArrayList<>();
+
+    if (current.getId().length() > 5) {
+      for (Document d : commentaire.find(eq("sejourId", new ObjectId(current.getId())))) {
+        Commentaire c = new Commentaire();
+        Document du = user.find(eq("_id", d.getObjectId("userId"))).first();
+        Utilisateur u = new Utilisateur(du.getObjectId("_id").toString(), du.getString("mail"), du.getString("nom"), du.getString("prenom"), du.getString("adresse"), du.getString("ville"), du.getString("codeZip"), du.getString("pays"), du.getString("role"), du.getString("password"));
+        c.setAuteur(u);
+        c.setSejour(current);
+        c.setDate(d.getString("date"));
+        c.setTitre(d.getString("titre"));
+        c.setContent(d.getString("corps"));
+        commentaireList.add(c);
+      }
+    }
+
+
+    commentaires = FXCollections.observableArrayList(commentaireList);
+
+    commentaireListView.setItems(commentaires);
+    commentaireListView.setCellFactory(commentaireSimple -> new CommentairesListCell(this));
   }
 
   public void switchToCart(ActionEvent event) throws IOException {
@@ -117,11 +161,15 @@ public class DetailController {
     }
   }
 
-  public void addCommentaire(ActionEvent e) {
+  public void addCommentaire(ActionEvent e) throws ParseException {
     MongoDatabase database = DabatabaseHandler.instanciateDatabase();
     MongoCollection<Document> sejourReel = database.getCollection("SejourReel");
     MongoCollection<Document> commentaire = database.getCollection("Commentaire");
+    MongoCollection<Document> user = database.getCollection("Utilisateur");
     Document doc = new Document();
+
+    DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT, Locale.FRENCH);
+    Date date = new Date();
 
     if (titleComms.getText().length() != 0 && contentComms.getText().length() != 0) {
       System.out.println("Titre: " + titleComms.getText() + " " + titleComms.getText().length());
@@ -151,8 +199,31 @@ public class DetailController {
       doc.append("userId", new ObjectId(GlobalData.getInstance().getLoggedInUser().getId()));
       doc.append("titre", titleComms.getText());
       doc.append("corps", contentComms.getText());
-      doc.append("date", new Date());
+      doc.append("date", df.format(date));
       commentaire.insertOne(doc);
+
+      titleComms.setText("");
+      contentComms.setText("");
+
+      List<Commentaire> commentaireList = new ArrayList<>();
+
+
+      for (Document d : commentaire.find(eq("sejourId", new ObjectId(current.getId())))) {
+        Commentaire c = new Commentaire();
+        Document du = user.find(eq("_id", d.getObjectId("userId"))).first();
+        Utilisateur u = new Utilisateur(du.getObjectId("_id").toString(), du.getString("mail"), du.getString("nom"), du.getString("prenom"), du.getString("adresse"), du.getString("ville"), du.getString("codeZip"), du.getString("pays"), du.getString("role"), du.getString("password"));
+        c.setAuteur(u);
+        c.setSejour(current);
+        c.setDate(d.getString("date"));
+        c.setTitre(d.getString("titre"));
+        c.setContent(d.getString("corps"));
+        commentaireList.add(c);
+      }
+
+      commentaires = FXCollections.observableArrayList(commentaireList);
+
+      commentaireListView.setItems(commentaires);
+      commentaireListView.setCellFactory(commentaireSimple -> new CommentairesListCell(this));
     } else {
       Alert alert = new Alert(Alert.AlertType.WARNING);
       alert.setTitle("Message invalide!");
