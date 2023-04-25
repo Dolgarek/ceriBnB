@@ -32,6 +32,8 @@ public class CartController {
     private Scene scene;
     private Parent root;
 
+    private ReservationController reservationController;
+
     public void switchToHomepageScene(ActionEvent event) throws IOException {
         Parent root = null;
         if (GlobalData.getInstance().getLoggedInUser().getRole().equals("hote")) {
@@ -46,9 +48,14 @@ public class CartController {
     }
 
     public void switchToListReservationScene(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("list-reservation.fxml"));
+        //Parent root = FXMLLoader.load(getClass().getResource("list-reservation.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("list-reservation.fxml"));
+        Parent root = fxmlLoader.load();
+        reservationController = fxmlLoader.getController();
+        reservationController.setMainController(this.mainController);
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root, 1445, 833);
+        stage.setTitle("Demandes de réservation");
         stage.setScene(scene);
         stage.show();
     }
@@ -77,6 +84,26 @@ public class CartController {
 
         // Set the new scene to the current stage
         currentStage.setScene(sejourList);
+        currentStage.show();
+    }
+
+    public void logout(ActionEvent e) throws IOException {
+        GlobalData.getInstance().setOwnSejour(null);
+        GlobalData.getInstance().setDetails(null);
+        GlobalData.getInstance().setLoggedInUser(null);
+        GlobalData.getInstance().setCart(null);
+
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("unauthentified-view.fxml"));
+        Parent root = fxmlLoader.load();
+
+        // Create a new Scene object
+        Scene unauthentifiedView = new Scene(root);
+
+        // Get the current stage
+        Stage currentStage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+
+        // Set the new scene to the current stage
+        currentStage.setScene(unauthentifiedView);
         currentStage.show();
     }
 }

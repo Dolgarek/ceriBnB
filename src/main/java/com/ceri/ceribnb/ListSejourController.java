@@ -68,6 +68,9 @@ public class ListSejourController {
     @FXML
     private Button my_sejour;
 
+    @FXML
+    private Button authentified_username;
+
     public int state = 0;
 
     public void switchToLoginFormScene(ActionEvent event) throws IOException {
@@ -132,7 +135,7 @@ public class ListSejourController {
     
     public void initialize() {
         //TODO: Supprimer après;
-        if (GlobalData.getInstance().getOwnSejour() == null) {
+        if (GlobalData.getInstance().getOwnSejour() == null && GlobalData.getInstance().getLoggedInUser() != null) {
          SejourGenerator sg = new SejourGenerator();
          GlobalData.getInstance().setOwnSejour(sg.getSejourReelByUser(new ObjectId(GlobalData.getInstance().getLoggedInUser().getId())));
         }
@@ -159,6 +162,15 @@ public class ListSejourController {
         }
         if (my_sejour != null) {
             my_sejour.setOnAction(e -> displayMySejour(e));
+        }
+        if (authentified_username != null) {
+            authentified_username.setOnAction(e -> {
+                try {
+                    logout(e);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            });
         }
         for (int i = 1; i <= 9; i++) {
             Image image = new Image(getClass().getResourceAsStream("/img/" + i + ".png"));
@@ -245,7 +257,7 @@ public class ListSejourController {
             } else {
                 r.setSejourId(new ObjectId(s.getId()));
             }
-            r.setUserId(new ObjectId(s.getHote().getId()));
+            r.setUserId(new ObjectId(GlobalData.getInstance().getLoggedInUser().getId()));
             r.setStatus("EN ATTENTE");
             Document d = new Document();
             d.append("_id", new ObjectId());
@@ -280,22 +292,6 @@ public class ListSejourController {
         currentStage.setScene(cartList);
         currentStage.show();
     }
-    /*private void showCart() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/ceri/ceribnb/cart.fxml"));
-            Parent cartRoot = loader.load();
-            cartController = loader.getController();
-            cartController.setMainController(this);
-
-            Scene cartScene = new Scene(cartRoot);
-            Stage cartStage = new Stage();
-            cartStage.setScene(cartScene);
-            cartStage.setTitle("Panier");
-            cartStage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }*/
 
     @FXML
     public void showReservation(ActionEvent event) throws IOException {
@@ -315,23 +311,6 @@ public class ListSejourController {
         currentStage.setScene(resaList);
         currentStage.show();
     }
-    /*private void showReservation() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/ceri/ceribnb/list-reservation.fxml"));
-            Parent resaRoot = loader.load();
-            resaController = loader.getController();
-            resaController.setMainController(this);
-
-            Scene resaScene = new Scene(resaRoot);
-            Stage resaStage = new Stage();
-            resaStage.setScene(resaScene);
-            resaStage.setTitle("Réservation");
-            resaStage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }*/
 
     public void displayAllSejour(ActionEvent e) {
         if (state == 1) {
@@ -352,6 +331,26 @@ public class ListSejourController {
 
             state = 1;
         }
+    }
+
+    public void logout(ActionEvent e) throws IOException {
+        GlobalData.getInstance().setOwnSejour(null);
+        GlobalData.getInstance().setDetails(null);
+        GlobalData.getInstance().setLoggedInUser(null);
+        GlobalData.getInstance().setCart(null);
+
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("unauthentified-view.fxml"));
+        Parent root = fxmlLoader.load();
+
+        // Create a new Scene object
+        Scene unauthentifiedView = new Scene(root);
+
+        // Get the current stage
+        Stage currentStage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+
+        // Set the new scene to the current stage
+        currentStage.setScene(unauthentifiedView);
+        currentStage.show();
     }
 
 }
