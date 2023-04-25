@@ -31,6 +31,7 @@ public class HelloApplication extends Application {
         GlobalData.getInstance().setLoggedInUser(users.get(0));
 
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("authentified-view.fxml"));
+
         Scene scene = new Scene(fxmlLoader.load(), 1445, 833);
         stage.setTitle("CeriBnB");
         stage.setScene(scene);

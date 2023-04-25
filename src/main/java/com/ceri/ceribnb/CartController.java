@@ -26,20 +26,25 @@ public class CartController {
     @FXML
     private Button closeButton;
 
-    public void close(ActionEvent event) throws IOException {
-        Stage cartStage = (Stage) validateOrderButton.getScene().getWindow();
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("authentified-view.fxml"));
-        Parent root = fxmlLoader.load();
 
-        // Create a new Scene object
-        Scene sejourList = new Scene(root);
+    private Stage stage;
+    private Scene scene;
+    private Parent root;
 
-        // Get the current stage
-        Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+    public void switchToHomepageScene(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("authentified-view.fxml"));
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        scene = new Scene(root, 1445, 833);
+        stage.setScene(scene);
+        stage.show();
+    }
 
-        // Set the new scene to the current stage
-        currentStage.setScene(sejourList);
-        currentStage.show();
+    public void switchToListReservationScene(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("list-reservation.fxml"));
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        scene = new Scene(root, 1445, 833);
+        stage.setScene(scene);
+        stage.show();
     }
 
     public void setMainController(ListSejourController mainController) {
