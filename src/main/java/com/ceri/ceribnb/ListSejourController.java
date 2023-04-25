@@ -49,6 +49,8 @@ public class ListSejourController {
 
     private ObservableList<Sejour> sejours;
 
+    private Set<Sejour> cartItems = new HashSet<>();
+
     public void initialize() {
         reservationButton.setAlignment(Pos.CENTER);
         reservationButton.setLayoutX(150);
@@ -60,12 +62,24 @@ public class ListSejourController {
                 throw new RuntimeException(ex);
             }
         });
+        cartButton.setOnAction(e -> {
+            try {
+                showCart(e);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
         for (int i = 1; i <= 9; i++) {
             Image image = new Image(getClass().getResourceAsStream("/img/" + i + ".png"));
             images.add(image);
         }
 
         CartController cartController = new CartController();
+
+        cartItems = GlobalData.getInstance().getCart();
+        if (cartItems == null) {
+            cartItems = new HashSet<>();
+        }
 
         SejourGenerator sg = new SejourGenerator();
         List<Sejour> test = GlobalData.getInstance().getSejours();
@@ -85,8 +99,6 @@ public class ListSejourController {
         return images.get(random.nextInt(images.size()));
     }
 
-    private Set<Sejour> cartItems = new HashSet<>();
-
     public void addToCart(Sejour sejour) {
         if (cartItems.add(sejour)) {
             Alert alert = new Alert(AlertType.INFORMATION);
@@ -101,12 +113,14 @@ public class ListSejourController {
             alert.setContentText("Le séjour est déjà présent dans le panier.");
             alert.showAndWait();
         }
+        GlobalData.getInstance().setCart(cartItems);
     }
 
     public ObservableList<Sejour> getCartItems() { return FXCollections.observableArrayList(cartItems); }
 
     public void removeFromCart(Sejour sejour) {
         cartItems.remove(sejour);
+        GlobalData.getInstance().setCart(cartItems);
     }
 
     public ObservableList<Sejour> validateOrder() {
@@ -151,8 +165,9 @@ public class ListSejourController {
         }
         sejours.removeAll(cartItems);
         cartItems.clear();
+        GlobalData.getInstance().setCart(cartItems);
+        GlobalData.getInstance().setSejours(sejours.stream().toList());
         // Retournez à la liste des séjours après avoir validé la commande.
-        cartController.close();
         return sejours;
     }
 
@@ -164,7 +179,24 @@ public class ListSejourController {
 
 
     @FXML
-    private void showCart() {
+    private void showCart(ActionEvent event) throws IOException {
+        // Load the new FXML file
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("cart.fxml"));
+        Parent root = fxmlLoader.load();
+        cartController = fxmlLoader.getController();
+        cartController.setMainController(this);
+
+        // Create a new Scene object
+        Scene cartList = new Scene(root);
+
+        // Get the current stage
+        Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+        // Set the new scene to the current stage
+        currentStage.setScene(cartList);
+        currentStage.show();
+    }
+    /*private void showCart() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/ceri/ceribnb/cart.fxml"));
             Parent cartRoot = loader.load();
@@ -179,7 +211,7 @@ public class ListSejourController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
     @FXML
     private void showReservation(ActionEvent event) throws IOException {
