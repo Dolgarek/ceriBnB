@@ -8,5 +8,6 @@
    <children>
       <ListView fx:id="sejourListView"/>
       <Button fx:id="cartButton" text="Panier" onAction="#showCart" />
+      <Button fx:id="reservationButton" text="Mes Réservation" onAction="#showReservation" />
    </children>
 </AnchorPane>

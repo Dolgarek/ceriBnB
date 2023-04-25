@@ -3,16 +3,16 @@ package com.ceri.ceribnb.helper;
 import com.ceri.ceribnb.entity.Sejour;
 import com.ceri.ceribnb.entity.Utilisateur;
 import com.mongodb.*;
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.*;
 import com.mongodb.client.internal.MongoClientImpl;
 import javafx.scene.image.Image;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 import java.io.File;
 import java.util.*;
+
+import static com.mongodb.client.model.Filters.eq;
 
 public class SejourGenerator {
 
@@ -24,6 +24,7 @@ public class SejourGenerator {
     private static final String FIXTURE_PRIX = "fixturePrix";
     private static final String FIXTURE_TITRE = "fixtureTitre";
     private static final String SEJOUR_REEL = "SejourReel";
+    private static final String RESERVATION = "Reservation";
 
     private MongoClient mongoClient;
     private MongoDatabase database;
@@ -81,9 +82,11 @@ public class SejourGenerator {
         MongoCollection<Document> prixCollection = database.getCollection(FIXTURE_PRIX);
         MongoCollection<Document> titreCollection = database.getCollection(FIXTURE_TITRE);
         MongoCollection<Document> sejourCollection = database.getCollection(SEJOUR_REEL);
+        MongoCollection<Document> reservation = database.getCollection(RESERVATION);
 
         List<String> adresses = new ArrayList<>();
         List<String> codesZip = new ArrayList<>();
+        List<String> ville = new ArrayList<>();
         List<String> pays = new ArrayList<>();
         List<String> descriptions = new ArrayList<>();
         List<Double> prix = new ArrayList<>();
@@ -97,7 +100,8 @@ public class SejourGenerator {
             codesZip.add(doc.getString("code"));
         }
         for (Document doc : paysCollection.find()) {
-            pays.add(doc.getString("ville"));
+            ville.add(doc.getString("ville"));
+            pays.add(doc.getString("pays"));
             descriptions.add(doc.getString("description"));
         }
         for (Document doc : prixCollection.find()) {
@@ -108,37 +112,43 @@ public class SejourGenerator {
         }
 
         for (Document doc : sejourCollection.find()) {
-            Sejour s = new Sejour();
-            File file = new File("/Users/theoquezel-perron/Downloads/" + doc.getString("img"));
-            //Image img = new Image(getClass().getResourceAsStream("/Users/theoquezel-perron/Downloads/" + doc.getString("img")));
-            //s.setImage(img);
-            if (file.exists()) {
-                Image img = new Image(file.toURI().toString());
-                s.setImage(img);
-            } else {
-                Image img = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/img/Question_mark_(black).png")));
-                s.setImage(img);
-            }
-
-            s.setAdresse(doc.getString("adresse"));
-            s.setDescription(doc.getString("description"));
-            s.setTitre(doc.getString("titre"));
-            for (Utilisateur h : hotes) {
-                if (h.getId() == doc.getObjectId("_id").toString()) {
-                    s.setHote(h);
+            Document rslt = reservation.find(eq("sejourId", doc.get("_id"))).first();
+            if (rslt == null) {
+                Sejour s = new Sejour();
+                File file = new File("/Users/theoquezel-perron/Downloads/" + doc.getString("img"));
+                //Image img = new Image(getClass().getResourceAsStream("/Users/theoquezel-perron/Downloads/" + doc.getString("img")));
+                //s.setImage(img);
+                if (file.exists()) {
+                    Image img = new Image(file.toURI().toString());
+                    s.setImage(img);
+                    s.setImgPath(doc.getString("img"));
+                } else {
+                    Image img = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/img/Question_mark_(black).png")));
+                    s.setImage(img);
+                    s.setImgPath(doc.getString("img"));
                 }
+                s.setId(doc.getObjectId("_id").toString());
+                s.setAdresse(doc.getString("adresse"));
+                s.setDescription(doc.getString("description"));
+                s.setTitre(doc.getString("titre"));
+                for (Utilisateur h : hotes) {
+                    if (h.getId() == doc.getObjectId("_id").toString()) {
+                        s.setHote(h);
+                    }
+                }
+                s.setPays(doc.getString("Pays"));
+                s.setVille(doc.getString("ville"));
+                s.setPrix(Double.valueOf(doc.getString("prix")));
+                s.setCodeZip(doc.getString("codeZip"));
+                s.setDateDebut(doc.getString("dateDebut"));
+                s.setDateFin(doc.getString("dateFin"));
+                sejours.add(s);
             }
-            s.setPays(doc.getString("Pays"));
-            s.setVille(doc.getString("ville"));
-            s.setPrix(Double.valueOf(doc.getString("prix")));
-            s.setCodeZip(doc.getString("codeZip"));
-            s.setDateDebut(doc.getString("dateDebut"));
-            s.setDateFin(doc.getString("dateFin"));
-            sejours.add(s);
         }
 
         for (int i = 0; i < nombreSejours - sejours.size(); i++) {
             Sejour sejour = new Sejour();
+            sejour.setId(String.valueOf(i));
             sejour.setTitre(titres.get(random.nextInt(titres.size())));
             sejour.setDescription(descriptions.get(random.nextInt(descriptions.size())));
             sejour.setAdresse(adresses.get(random.nextInt(adresses.size())));
@@ -146,7 +156,11 @@ public class SejourGenerator {
             sejour.setDateDebut(String.valueOf(new Date()));
             sejour.setDateFin(String.valueOf(new Date()));
             sejour.setHote(hotes.get(random.nextInt(hotes.size())));
-            sejour.setImage(images.get(random.nextInt(images.size())));
+            int imgRand = random.nextInt(images.size());
+            sejour.setImage(images.get(imgRand));
+            sejour.setImgPath(Integer.valueOf(imgRand) + ".png");
+            sejour.setPays(pays.get(random.nextInt(pays.size())));
+            sejour.setVille(ville.get(random.nextInt(ville.size())));
             sejoursGeneres.add(sejour);
         }
         sejours.addAll(sejoursGeneres);

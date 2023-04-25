@@ -1,14 +1,21 @@
 package com.ceri.ceribnb;
 
+import com.ceri.ceribnb.entity.Reservation;
+import com.ceri.ceribnb.helper.DabatabaseHandler;
+import com.ceri.ceribnb.helper.GlobalData;
 import com.ceri.ceribnb.helper.SejourGenerator;
 import com.ceri.ceribnb.entity.Sejour;
 import com.ceri.ceribnb.entity.Utilisateur;
 import com.ceri.ceribnb.helper.SejourListCell;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -22,6 +29,12 @@ import javafx.scene.image.Image;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
+import org.bson.Document;
+import org.bson.types.ObjectId;
+
+import com.google.gson.Gson;
+
+import static com.mongodb.client.model.Filters.eq;
 
 public class ListSejourController {
 
@@ -32,8 +45,11 @@ public class ListSejourController {
 
     private CartController cartController;
 
+    private ReservationController resaController;
+
     private ObservableList<Sejour> sejours;
 
+    private Set<Sejour> cartItems = new HashSet<>();
     private Stage stage;
     private Scene scene;
     private Parent root;
@@ -45,8 +61,25 @@ public class ListSejourController {
         stage.setScene(scene);
         stage.show();
     }
-
+    
     public void initialize() {
+        reservationButton.setAlignment(Pos.CENTER);
+        reservationButton.setLayoutX(150);
+        reservationButton.setLayoutY(0);
+        reservationButton.setOnAction(e -> {
+            try {
+                showReservation(e);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+        cartButton.setOnAction(e -> {
+            try {
+                showCart(e);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
         for (int i = 1; i <= 9; i++) {
             Image image = new Image(getClass().getResourceAsStream("/img/" + i + ".png"));
             images.add(image);
@@ -54,9 +87,18 @@ public class ListSejourController {
 
         CartController cartController = new CartController();
 
+        cartItems = GlobalData.getInstance().getCart();
+        if (cartItems == null) {
+            cartItems = new HashSet<>();
+        }
+
         SejourGenerator sg = new SejourGenerator();
-        List<Utilisateur> users = sg.getUtilisateurs();
-        List<Sejour> test = sg.genererSejours(10000, users, images);
+        List<Sejour> test = GlobalData.getInstance().getSejours();
+        if (test == null) {
+            List<Utilisateur> users = sg.getUtilisateurs();
+            test = sg.genererSejours(10000, users, images);
+            GlobalData.getInstance().setSejours(test);
+        }
 
         sejours = FXCollections.observableArrayList(test);
 
@@ -67,8 +109,6 @@ public class ListSejourController {
     public Image getRandomImage() {
         return images.get(random.nextInt(images.size()));
     }
-
-    private Set<Sejour> cartItems = new HashSet<>();
 
     public void addToCart(Sejour sejour) {
         if (cartItems.add(sejour)) {
@@ -84,19 +124,61 @@ public class ListSejourController {
             alert.setContentText("Le séjour est déjà présent dans le panier.");
             alert.showAndWait();
         }
+        GlobalData.getInstance().setCart(cartItems);
     }
 
     public ObservableList<Sejour> getCartItems() { return FXCollections.observableArrayList(cartItems); }
 
     public void removeFromCart(Sejour sejour) {
         cartItems.remove(sejour);
+        GlobalData.getInstance().setCart(cartItems);
     }
 
     public ObservableList<Sejour> validateOrder() {
+        MongoDatabase database = DabatabaseHandler.instanciateDatabase();
+        MongoCollection<Document> reservation = database.getCollection("Reservation");
+        MongoCollection<Document> sejourReel = database.getCollection("SejourReel");
+        for (Sejour s : cartItems) {
+            Reservation r = new Reservation();
+            Gson gson = new Gson();
+            if (s.getId().length() <= 5) {
+                /*Sejour manip = s;
+                manip.setId(new ObjectId().toString());
+                r.setSejourId(new ObjectId(manip.getId()));*/
+
+                Document d2 = new Document();
+                d2.append("_id", new ObjectId());
+                d2.append("hoteId", new ObjectId(s.getHote().getId()));
+                d2.append("titre", s.getTitre());
+                d2.append("description", s.getDescription());
+                d2.append("adresse", s.getAdresse());
+                d2.append("ville", s.getVille());
+                d2.append("Pays", s.getPays());
+                d2.append("codeZip", s.getCodeZip());
+                d2.append("prix", String.valueOf(s.getPrix()));
+                d2.append("img", s.getImgPath());
+                d2.append("dateDebut", s.getDateDebut());
+                d2.append("dateFin", s.getDateFin());
+                sejourReel.insertOne(d2);
+                r.setSejourId(d2.getObjectId("_id"));
+
+            } else {
+                r.setSejourId(new ObjectId(s.getId()));
+            }
+            r.setUserId(new ObjectId(s.getHote().getId()));
+            r.setStatus("EN ATTENTE");
+            Document d = new Document();
+            d.append("_id", new ObjectId());
+            d.append("sejourId", r.getSejourId());
+            d.append("userId", r.getUserId());
+            d.append("status", r.getStatus());
+            reservation.insertOne(d);
+        }
         sejours.removeAll(cartItems);
         cartItems.clear();
+        GlobalData.getInstance().setCart(cartItems);
+        GlobalData.getInstance().setSejours(sejours.stream().toList());
         // Retournez à la liste des séjours après avoir validé la commande.
-        cartController.close();
         return sejours;
     }
 
@@ -104,7 +186,28 @@ public class ListSejourController {
     private Button cartButton;
 
     @FXML
-    private void showCart() {
+    private Button reservationButton;
+
+
+    @FXML
+    private void showCart(ActionEvent event) throws IOException {
+        // Load the new FXML file
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("cart.fxml"));
+        Parent root = fxmlLoader.load();
+        cartController = fxmlLoader.getController();
+        cartController.setMainController(this);
+
+        // Create a new Scene object
+        Scene cartList = new Scene(root);
+
+        // Get the current stage
+        Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+        // Set the new scene to the current stage
+        currentStage.setScene(cartList);
+        currentStage.show();
+    }
+    /*private void showCart() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/ceri/ceribnb/cart.fxml"));
             Parent cartRoot = loader.load();
@@ -119,7 +222,43 @@ public class ListSejourController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }*/
+
+    @FXML
+    private void showReservation(ActionEvent event) throws IOException {
+        // Load the new FXML file
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("list-reservation.fxml"));
+        Parent root = fxmlLoader.load();
+        resaController = fxmlLoader.getController();
+        resaController.setMainController(this);
+
+        // Create a new Scene object
+        Scene resaList = new Scene(root);
+
+        // Get the current stage
+        Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+        // Set the new scene to the current stage
+        currentStage.setScene(resaList);
+        currentStage.show();
     }
+    /*private void showReservation() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/ceri/ceribnb/list-reservation.fxml"));
+            Parent resaRoot = loader.load();
+            resaController = loader.getController();
+            resaController.setMainController(this);
+
+            Scene resaScene = new Scene(resaRoot);
+            Stage resaStage = new Stage();
+            resaStage.setScene(resaScene);
+            resaStage.setTitle("Réservation");
+            resaStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }*/
 
 
 }
