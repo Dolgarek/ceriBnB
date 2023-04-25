@@ -8,7 +8,12 @@ import com.ceri.ceribnb.helper.SejourListCell;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
@@ -17,6 +22,7 @@ import org.bson.Document;
 import org.bson.types.ObjectId;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -35,10 +41,25 @@ public class ReservationController {
     @FXML
     private Button closeButton;
 
-    public void close() {
+    public void close(ActionEvent event) throws IOException {
+        // Load the new FXML file
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("list-sejour.fxml"));
+        Parent root = fxmlLoader.load();
+
+        // Create a new Scene object
+        Scene sejourList = new Scene(root);
+
+        // Get the current stage
+        Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+        // Set the new scene to the current stage
+        currentStage.setScene(sejourList);
+        currentStage.show();
+    }
+    /*public void close() {
         Stage cartStage = (Stage) closeButton.getScene().getWindow();
         cartStage.close();
-    }
+    }*/
 
     public void setMainController(ListSejourController mainController) {
         this.mainController = mainController;

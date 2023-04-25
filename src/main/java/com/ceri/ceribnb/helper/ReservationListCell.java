@@ -36,7 +36,6 @@ public class ReservationListCell extends ListCell<Sejour> {
             Text nomText = new Text(sejour.getTitre());
             Text descriptifText = new Text(sejour.getStatus());
             Text prix = new Text(String.valueOf(sejour.getPrix()));
-            System.out.println(sejour.getStatus());
             if (Objects.equals(sejour.getStatus(), "EN ATTENTE")) {
                 descriptifText.setFill(Color.RED);
             } else {

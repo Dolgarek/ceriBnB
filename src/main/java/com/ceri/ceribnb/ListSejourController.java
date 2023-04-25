@@ -2,6 +2,7 @@ package com.ceri.ceribnb;
 
 import com.ceri.ceribnb.entity.Reservation;
 import com.ceri.ceribnb.helper.DabatabaseHandler;
+import com.ceri.ceribnb.helper.GlobalData;
 import com.ceri.ceribnb.helper.SejourGenerator;
 import com.ceri.ceribnb.entity.Sejour;
 import com.ceri.ceribnb.entity.Utilisateur;
@@ -13,6 +14,8 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -47,6 +50,9 @@ public class ListSejourController {
     private ObservableList<Sejour> sejours;
 
     public void initialize() {
+        reservationButton.setAlignment(Pos.CENTER);
+        reservationButton.setLayoutX(150);
+        reservationButton.setLayoutY(0);
         reservationButton.setOnAction(e -> {
             try {
                 showReservation(e);
@@ -62,8 +68,12 @@ public class ListSejourController {
         CartController cartController = new CartController();
 
         SejourGenerator sg = new SejourGenerator();
-        List<Utilisateur> users = sg.getUtilisateurs();
-        List<Sejour> test = sg.genererSejours(10000, users, images);
+        List<Sejour> test = GlobalData.getInstance().getSejours();
+        if (test == null) {
+            List<Utilisateur> users = sg.getUtilisateurs();
+            test = sg.genererSejours(10000, users, images);
+            GlobalData.getInstance().setSejours(test);
+        }
 
         sejours = FXCollections.observableArrayList(test);
 

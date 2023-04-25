@@ -2,6 +2,7 @@ package com.ceri.ceribnb;
 
 import com.ceri.ceribnb.entity.Sejour;
 import com.ceri.ceribnb.entity.Utilisateur;
+import com.ceri.ceribnb.helper.GlobalData;
 import com.ceri.ceribnb.helper.SejourGenerator;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
