@@ -66,6 +66,7 @@ public class ListSejourController {
         Parent root = FXMLLoader.load(getClass().getResource("login.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root, 1445, 833);
+        stage.setTitle("Connexion");
         stage.setScene(scene);
         stage.show();
     }
@@ -79,6 +80,18 @@ public class ListSejourController {
         detailController.setMainController(this);
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root, 1445, 833);
+        stage.setTitle("CeriBnB");
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public void switchToCalendarScene(ActionEvent event) throws IOException {
+        //Parent root = FXMLLoader.load(getClass().getResource("detail-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("calendar-view.fxml"));
+        Parent root = fxmlLoader.load();
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        scene = new Scene(root, 1445, 833);
+        stage.setTitle("Calendrier");
         stage.setScene(scene);
         stage.show();
     }
