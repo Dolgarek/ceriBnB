@@ -151,6 +151,8 @@ public class SejourGenerator {
             }
         }
 
+        GlobalData.getInstance().setNumberGenerated(nombreSejours - sejours.size());
+
         for (int i = 0; i < nombreSejours - sejours.size(); i++) {
             Sejour sejour = new Sejour();
             sejour.setId(String.valueOf(i));

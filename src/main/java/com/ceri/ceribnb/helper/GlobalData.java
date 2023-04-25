@@ -18,9 +18,7 @@ public class GlobalData {
 
     private Sejour details;
 
-    public void setLoggedInUser(Utilisateur loggedInUser) {
-        this.loggedInUser = loggedInUser;
-    }
+    private int numberGenerated;
 
     private GlobalData() {}
 
@@ -47,8 +45,18 @@ public class GlobalData {
 
     public Utilisateur getLoggedInUser() { return loggedInUser; }
 
+    public void setLoggedInUser(Utilisateur loggedInUser) {
+        this.loggedInUser = loggedInUser;
+    }
+
     public Sejour getDetails() { return details; }
 
     public void setDetails(Sejour details) { this.details = details; }
+
+
+    public int getNumberGenerated() { return numberGenerated; }
+
+    public void setNumberGenerated(int numberGenerated) { this.numberGenerated = numberGenerated; }
+
 }
 
