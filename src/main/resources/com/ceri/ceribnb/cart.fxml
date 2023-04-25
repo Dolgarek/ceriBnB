@@ -23,12 +23,12 @@
                </font>
             </Button>
                 <HBox prefHeight="64.0" prefWidth="170.0" />
-                <TextField alignment="CENTER" prefHeight="27.0" prefWidth="850.0" promptText="Recherche">
+                <TextField alignment="CENTER" disable="true" prefHeight="27.0" prefWidth="850.0" promptText="Recherche">
                     <HBox.margin>
                         <Insets top="20.0" />
                     </HBox.margin>
                 </TextField>
-                <Button mnemonicParsing="false" prefHeight="26.0">
+                <Button disable="true" mnemonicParsing="false" prefHeight="26.0">
                     <HBox.margin>
                         <Insets top="20.0" />
                     </HBox.margin>
