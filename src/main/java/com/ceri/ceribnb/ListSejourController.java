@@ -68,6 +68,9 @@ public class ListSejourController {
     @FXML
     private Button my_sejour;
 
+    @FXML
+    private Button authentified_username;
+
     public int state = 0;
 
     public void switchToLoginFormScene(ActionEvent event) throws IOException {
@@ -117,7 +120,7 @@ public class ListSejourController {
     
     public void initialize() {
         //TODO: Supprimer après;
-        if (GlobalData.getInstance().getOwnSejour() == null) {
+        if (GlobalData.getInstance().getOwnSejour() == null && GlobalData.getInstance().getLoggedInUser() != null) {
          SejourGenerator sg = new SejourGenerator();
          GlobalData.getInstance().setOwnSejour(sg.getSejourReelByUser(new ObjectId(GlobalData.getInstance().getLoggedInUser().getId())));
         }
@@ -144,6 +147,15 @@ public class ListSejourController {
         }
         if (my_sejour != null) {
             my_sejour.setOnAction(e -> displayMySejour(e));
+        }
+        if (authentified_username != null) {
+            authentified_username.setOnAction(e -> {
+                try {
+                    logout(e);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            });
         }
         for (int i = 1; i <= 9; i++) {
             Image image = new Image(getClass().getResourceAsStream("/img/" + i + ".png"));
@@ -304,6 +316,26 @@ public class ListSejourController {
 
             state = 1;
         }
+    }
+
+    public void logout(ActionEvent e) throws IOException {
+        GlobalData.getInstance().setOwnSejour(null);
+        GlobalData.getInstance().setDetails(null);
+        GlobalData.getInstance().setLoggedInUser(null);
+        GlobalData.getInstance().setCart(null);
+
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("unauthentified-view.fxml"));
+        Parent root = fxmlLoader.load();
+
+        // Create a new Scene object
+        Scene unauthentifiedView = new Scene(root);
+
+        // Get the current stage
+        Stage currentStage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+
+        // Set the new scene to the current stage
+        currentStage.setScene(unauthentifiedView);
+        currentStage.show();
     }
 
 }
