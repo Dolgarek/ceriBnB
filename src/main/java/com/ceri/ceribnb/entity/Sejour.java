@@ -16,6 +16,7 @@ public class Sejour {
     private String pays;
     private Image image;
     private String imgPath;
+    private String status;
 
     public Sejour() {
     }
@@ -123,6 +124,14 @@ public class Sejour {
 
     public void setImgPath(String imgPath) {
         this.imgPath = imgPath;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
 }

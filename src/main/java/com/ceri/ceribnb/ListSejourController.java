@@ -10,8 +10,10 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -40,9 +42,18 @@ public class ListSejourController {
 
     private CartController cartController;
 
+    private ReservationController resaController;
+
     private ObservableList<Sejour> sejours;
 
     public void initialize() {
+        reservationButton.setOnAction(e -> {
+            try {
+                showReservation(e);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
         for (int i = 1; i <= 9; i++) {
             Image image = new Image(getClass().getResourceAsStream("/img/" + i + ".png"));
             images.add(image);
@@ -139,6 +150,10 @@ public class ListSejourController {
     private Button cartButton;
 
     @FXML
+    private Button reservationButton;
+
+
+    @FXML
     private void showCart() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/ceri/ceribnb/cart.fxml"));
@@ -155,6 +170,42 @@ public class ListSejourController {
             e.printStackTrace();
         }
     }
+
+    @FXML
+    private void showReservation(ActionEvent event) throws IOException {
+        // Load the new FXML file
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("list-reservation.fxml"));
+        Parent root = fxmlLoader.load();
+        resaController = fxmlLoader.getController();
+        resaController.setMainController(this);
+
+        // Create a new Scene object
+        Scene resaList = new Scene(root);
+
+        // Get the current stage
+        Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+        // Set the new scene to the current stage
+        currentStage.setScene(resaList);
+        currentStage.show();
+    }
+    /*private void showReservation() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/ceri/ceribnb/list-reservation.fxml"));
+            Parent resaRoot = loader.load();
+            resaController = loader.getController();
+            resaController.setMainController(this);
+
+            Scene resaScene = new Scene(resaRoot);
+            Stage resaStage = new Stage();
+            resaStage.setScene(resaScene);
+            resaStage.setTitle("Réservation");
+            resaStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }*/
 
 
 }
