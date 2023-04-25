@@ -31,6 +31,8 @@ public class CartController {
     private Scene scene;
     private Parent root;
 
+    private ReservationController reservationController;
+
     public void switchToHomepageScene(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("authentified-view.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -40,9 +42,14 @@ public class CartController {
     }
 
     public void switchToListReservationScene(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("list-reservation.fxml"));
+        //Parent root = FXMLLoader.load(getClass().getResource("list-reservation.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("list-reservation.fxml"));
+        Parent root = fxmlLoader.load();
+        reservationController = fxmlLoader.getController();
+        reservationController.setMainController(this.mainController);
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root, 1445, 833);
+        stage.setTitle("Demandes de réservation");
         stage.setScene(scene);
         stage.show();
     }

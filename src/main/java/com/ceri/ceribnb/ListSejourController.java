@@ -265,22 +265,6 @@ public class ListSejourController {
         currentStage.setScene(cartList);
         currentStage.show();
     }
-    /*private void showCart() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/ceri/ceribnb/cart.fxml"));
-            Parent cartRoot = loader.load();
-            cartController = loader.getController();
-            cartController.setMainController(this);
-
-            Scene cartScene = new Scene(cartRoot);
-            Stage cartStage = new Stage();
-            cartStage.setScene(cartScene);
-            cartStage.setTitle("Panier");
-            cartStage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }*/
 
     @FXML
     public void showReservation(ActionEvent event) throws IOException {
@@ -300,23 +284,6 @@ public class ListSejourController {
         currentStage.setScene(resaList);
         currentStage.show();
     }
-    /*private void showReservation() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/ceri/ceribnb/list-reservation.fxml"));
-            Parent resaRoot = loader.load();
-            resaController = loader.getController();
-            resaController.setMainController(this);
-
-            Scene resaScene = new Scene(resaRoot);
-            Stage resaStage = new Stage();
-            resaStage.setScene(resaScene);
-            resaStage.setTitle("Réservation");
-            resaStage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }*/
 
     public void displayAllSejour(ActionEvent e) {
         if (state == 1) {
