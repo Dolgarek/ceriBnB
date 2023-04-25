@@ -27,7 +27,7 @@ public class HelloApplication extends Application {
     //public void start(Stage stage) throws IOException {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("unauthentified-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("detail-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1445, 833);
         stage.setTitle("CeriBnB");
         stage.setScene(scene);
