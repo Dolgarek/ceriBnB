@@ -10,8 +10,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 public class DetailController {
@@ -32,6 +33,44 @@ public class DetailController {
 
   @FXML
   private Button user_book;
+
+  @FXML
+  private Label titreSejour;
+
+  @FXML
+  private ImageView imgSejour;
+
+  @FXML
+  private TextArea descSejour;
+
+  @FXML
+  private Label prixSejour;
+
+  @FXML
+  private Label debutSejour;
+
+  @FXML
+  private Label finSejour;
+
+  @FXML
+  private TextField titleComms;
+
+  @FXML
+  private  TextArea contentComms;
+
+  @FXML
+  private Button sendComms;
+
+  public void initialize() {
+    current = GlobalData.getInstance().getDetails();
+    titreSejour.setText(current.getTitre());
+    imgSejour.setImage(current.getImage());
+    descSejour.setText(current.getAdresse() + "\n" + current.getPays() + ", " + current.getVille() + ", " + current.getCodeZip() + "\n\n" + current.getDescription());
+    descSejour.setWrapText(true);
+    prixSejour.setText("Prix: " + String.valueOf(current.getPrix()) + "€/nuits");
+    debutSejour.setText(current.getDateDebut());
+    finSejour.setText(current.getDateFin());
+  }
 
   public void switchToCart(ActionEvent event) throws IOException {
     this.mainController.showCart(event);

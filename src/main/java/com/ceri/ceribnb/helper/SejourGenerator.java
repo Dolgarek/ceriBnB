@@ -155,6 +155,7 @@ public class SejourGenerator {
             sejour.setPrix(prix.get(random.nextInt(prix.size())));
             sejour.setDateDebut(String.valueOf(new Date()));
             sejour.setDateFin(String.valueOf(new Date()));
+            sejour.setCodeZip(codesZip.get(random.nextInt(codesZip.size())));
             sejour.setHote(hotes.get(random.nextInt(hotes.size())));
             int imgRand = random.nextInt(images.size());
             sejour.setImage(images.get(imgRand));
