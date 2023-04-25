@@ -14,7 +14,7 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="833.0" prefWidth="1445.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ceri.ceribnb.ListSejourController">
    <top>
-      <HBox prefHeight="64.0" prefWidth="1452.0" style="-fx-background-color: black; -fx-opacity: 0.5;" BorderPane.alignment="CENTER">
+      <HBox prefHeight="64.0" prefWidth="1452.0" style="-fx-background-color: #d85d4d;" BorderPane.alignment="CENTER">
          <children>
             <Label alignment="CENTER" prefHeight="70.0" prefWidth="129.0" text="CeriBnB" textFill="WHITE">
                <font>
@@ -23,8 +23,8 @@
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></Label>
-            <HBox prefHeight="70.0" prefWidth="150.0" />
-            <TextField alignment="CENTER" prefHeight="27.0" prefWidth="885.0" promptText="Recherche">
+            <HBox prefHeight="64.0" prefWidth="170.0" />
+            <TextField alignment="CENTER" prefHeight="27.0" prefWidth="850.0" promptText="Recherche">
                <HBox.margin>
                   <Insets top="20.0" />
                </HBox.margin>
@@ -44,10 +44,36 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <HBox prefHeight="72.0" prefWidth="154.0" HBox.hgrow="ALWAYS" />
-            <Button alignment="BOTTOM_LEFT" mnemonicParsing="false" onAction="#switchToLoginFormScene" prefHeight="54.0" prefWidth="77.0" style="-fx-alignment: bottom-left; -fx-content-display: top;" text="Connexion" textAlignment="CENTER">
+            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="64.0" prefWidth="120.0" style="-fx-background-color: transparent; -fx-alignment: bottom-center; -fx-content-display: top;" text="Réservations" textAlignment="CENTER">
+               <HBox.margin>
+                  <Insets left="5.0" />
+               </HBox.margin>
                <graphic>
-                  <ImageView fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="26.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../icon/bookmark.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button mnemonicParsing="false" prefHeight="64.0" prefWidth="55.0" style="-fx-background-color: transparent; -fx-alignment: bottom-left; -fx-content-display: top;" text="Panier">
+               <HBox.margin>
+                  <Insets right="5.0" />
+               </HBox.margin>
+               <graphic>
+                  <ImageView fitHeight="26.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../icon/cart.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="authentified_username" alignment="BOTTOM_LEFT" mnemonicParsing="false" prefHeight="70.0" prefWidth="77.0" style="-fx-alignment: bottom-left; -fx-content-display: top; -fx-background-color: transparent;" text="Username TODO" textAlignment="CENTER">
+               <graphic>
+                  <ImageView fx:id="authentified_user_image" fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../../icon/unknown_user.png" />
                      </image>
@@ -57,7 +83,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
                <HBox.margin>
-                  <Insets right="8.0" top="8.0" />
+                  <Insets right="8.0" />
                </HBox.margin>
             </Button>
          </children>
