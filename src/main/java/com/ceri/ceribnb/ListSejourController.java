@@ -1,12 +1,9 @@
 package com.ceri.ceribnb;
 
 import com.ceri.ceribnb.entity.Reservation;
-import com.ceri.ceribnb.helper.DabatabaseHandler;
-import com.ceri.ceribnb.helper.GlobalData;
-import com.ceri.ceribnb.helper.SejourGenerator;
+import com.ceri.ceribnb.helper.*;
 import com.ceri.ceribnb.entity.Sejour;
 import com.ceri.ceribnb.entity.Utilisateur;
-import com.ceri.ceribnb.helper.SejourListCell;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import javafx.collections.FXCollections;
@@ -48,6 +45,10 @@ public class ListSejourController {
     private ReservationController resaController;
 
     private DetailController detailController;
+
+    private BookingRequestsController bookingRequestsController;
+
+    private CalendarController calendarController;
 
     private ObservableList<Sejour> sejours;
 
@@ -121,6 +122,8 @@ public class ListSejourController {
         //Parent root = FXMLLoader.load(getClass().getResource("detail-view.fxml"));
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("calendar-view.fxml"));
         Parent root = fxmlLoader.load();
+        calendarController = fxmlLoader.getController();
+        calendarController.setMainController(this);
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root, 1445, 833);
         stage.setTitle("Calendrier");
@@ -132,6 +135,8 @@ public class ListSejourController {
         //Parent root = FXMLLoader.load(getClass().getResource("detail-view.fxml"));
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("booking-requests-view.fxml"));
         Parent root = fxmlLoader.load();
+        bookingRequestsController = fxmlLoader.getController();
+        bookingRequestsController.setMainController(this);
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root, 1445, 833);
         stage.setTitle("Demandes de réservation");
@@ -202,6 +207,8 @@ public class ListSejourController {
 
         sejourListView.setItems(sejours);
         sejourListView.setCellFactory(sejour -> new SejourListCell(this, cartController, false));
+
+        System.out.println("Hello test");
     }
 
     public Image getRandomImage() {
@@ -238,7 +245,6 @@ public class ListSejourController {
         MongoCollection<Document> sejourReel = database.getCollection("SejourReel");
         for (Sejour s : cartItems) {
             Reservation r = new Reservation();
-            Gson gson = new Gson();
             if (s.getId().length() <= 5) {
                 /*Sejour manip = s;
                 manip.setId(new ObjectId().toString());
@@ -277,6 +283,13 @@ public class ListSejourController {
         GlobalData.getInstance().setCart(cartItems);
         GlobalData.getInstance().setSejours(sejours.stream().toList());
         // Retournez à la liste des séjours après avoir validé la commande.
+        return sejours;
+    }
+
+    public ObservableList<Sejour> handleBookingRequest(Sejour s) {
+        sejours.add(0, s);
+        GlobalData.getInstance().setSejours(sejours.stream().toList());
+
         return sejours;
     }
 

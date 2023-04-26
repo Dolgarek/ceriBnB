@@ -22,6 +22,9 @@ public class CalendarController {
   private Scene scene;
   private Parent root;
 
+  private BookingRequestsController bookingRequestsController;
+  private ListSejourController mainController;
+
   @FXML
   private GraphicalCalendar calendar;
 
@@ -51,11 +54,17 @@ public class CalendarController {
     //Parent root = FXMLLoader.load(getClass().getResource("detail-view.fxml"));
     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("booking-requests-view.fxml"));
     Parent root = fxmlLoader.load();
+    bookingRequestsController = fxmlLoader.getController();
+    bookingRequestsController.setMainController(this.mainController);
     stage = (Stage)((Node)event.getSource()).getScene().getWindow();
     scene = new Scene(root, 1445, 833);
     stage.setTitle("Demandes de réservation");
     stage.setScene(scene);
     stage.show();
+  }
+
+  public void setMainController(ListSejourController sejourController) {
+    this.mainController = sejourController;
   }
 
   public void logout(ActionEvent e) throws IOException {

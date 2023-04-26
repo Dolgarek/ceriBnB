@@ -42,6 +42,10 @@ public class BookingRequestsController {
 
   private int state;
 
+  private ListSejourController mainController;
+
+  private CalendarController calendarController;
+
   private List<Sejour> reservationItems;
 
   @FXML
@@ -96,6 +100,10 @@ public class BookingRequestsController {
     reservationListView.setCellFactory(resa -> new ReservationListCell(true, this));
   }
 
+  public void setMainController(ListSejourController listSejourController) {
+    this.mainController = listSejourController;
+  }
+
   public void switchToHomepageScene(ActionEvent event) throws IOException {
     Parent root = null;
     if (GlobalData.getInstance().getLoggedInUser().getRole().equals("hote")) {
@@ -114,6 +122,8 @@ public class BookingRequestsController {
     //Parent root = FXMLLoader.load(getClass().getResource("detail-view.fxml"));
     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("calendar-view.fxml"));
     Parent root = fxmlLoader.load();
+    calendarController = fxmlLoader.getController();
+    calendarController.setMainController(this.mainController);
     stage = (Stage)((Node)event.getSource()).getScene().getWindow();
     scene = new Scene(root, 1445, 833);
     stage.setTitle("Calendrier");
@@ -123,7 +133,7 @@ public class BookingRequestsController {
 
   public void sortRequestWaiting(ActionEvent e) {
     if (this.state == 1) {
-      Collections.sort(reservationItems, new SejourStatusComparator());
+      reservationItems.sort(new SejourStatusComparator());
       reservationListView.setItems(FXCollections.observableArrayList(reservationItems));
       reservationListView.setCellFactory(resa -> new ReservationListCell(true, this));
       this.state = 0;
@@ -132,7 +142,7 @@ public class BookingRequestsController {
 
   public void sortRequestApproved(ActionEvent e) {
     if (this.state == 0) {
-      Collections.sort(reservationItems, new SejourStatusComparator().reversed());
+      reservationItems.sort(new SejourStatusComparator().reversed());
       reservationListView.setItems(FXCollections.observableArrayList(reservationItems));
       reservationListView.setCellFactory(resa -> new ReservationListCell(true, this));
       this.state = 1;
@@ -140,6 +150,7 @@ public class BookingRequestsController {
   }
 
   public void updateStatus(ActionEvent e, String status) {
+    Sejour toBeAdded = null;
     MongoDatabase database = DabatabaseHandler.instanciateDatabase();
     MongoCollection<Document> reservation = database.getCollection("Reservation");
     System.out.println(GlobalData.getInstance().getReservationId());
@@ -170,16 +181,32 @@ public class BookingRequestsController {
             s.setImage(img);
           }
           s.setPrix(Double.valueOf(d.getString("prix")));
+          s.setStatus(d.getString("status"));
+          s.setId(d.getObjectId("_id").toString());
+          s.setAdresse(d.getString("adresse"));
+          s.setDescription(d.getString("description"));
+          s.setHote(GlobalData.getInstance().getLoggedInUser());
+          s.setPays(d.getString("Pays"));
+          s.setVille(d.getString("ville"));
+          s.setCodeZip(d.getString("codeZip"));
+          s.setDateDebut(d.getString("dateDebut"));
+          s.setDateFin(d.getString("dateFin"));
           s.setStatus(doc.getString("status"));
           reservationItems.add(s);
+          System.out.println(r.getSejourId().toString() + " " + GlobalData.getInstance().getReservationId());
+          System.out.println(r.getSejourId().toString().equals(GlobalData.getInstance().getReservationId()));
+          if (r.getSejourId().toString().equals(GlobalData.getInstance().getReservationId())) {
+            toBeAdded = s;
+          }
         }
       }
     }
-      if (this.state == 0) {
-        sortRequestWaiting(e);
-      } else {
-        sortRequestApproved(e);
-      }
+    //System.out.println(toBeAdded.getTitre());
+    if (status.equals("REFUSE") && toBeAdded != null) {
+      mainController.handleBookingRequest(toBeAdded);
+    }
+    state = 1;
+    sortRequestWaiting(e);
   }
 
   public void logout(ActionEvent e) throws IOException {
