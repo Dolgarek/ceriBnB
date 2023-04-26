@@ -63,6 +63,9 @@ public class ReservationListCell extends ListCell<Sejour> {
             final Region spacer = new Region();
             HBox.setHgrow(spacer, Priority.ALWAYS);
 
+            final Region vSpacer = new Region();
+            HBox.setMargin(spacer, new Insets(10));
+
             if (Objects.equals(sejour.getStatus(), "REFUSE")) {
                 status.setTextFill(Color.RED);
             } else if (Objects.equals(sejour.getStatus(), "EN ATTENTE")){
@@ -78,18 +81,24 @@ public class ReservationListCell extends ListCell<Sejour> {
             HBox.setMargin(vBox, new Insets(0, 0, 0, 50));
             HBox.setMargin(status, new Insets(0, 0, 0, 50));
             if (this.isHost) {
+                VBox vBox1 = new VBox();
+                vBox1.setMaxSize(VBox.USE_PREF_SIZE, VBox.USE_PREF_SIZE);
+                vBox1.setAlignment(Pos.CENTER);
                 if (sejour.getStatus().equals("EN ATTENTE")) {
                     Button valide = new Button("Accepter");
+                    vBox1.setSpacing(5);
                     valide.setOnAction(e -> {
                         GlobalData.getInstance().setReservationId(sejour.getWaitingBookinId());
                         bookingRequestsController.updateStatus(e, "VALIDE");
                     });
                     Button refuse = new Button("Refuser");
+                    refuse.setMinWidth(valide.getWidth());
                     refuse.setOnAction(e -> {
                         GlobalData.getInstance().setReservationId(sejour.getWaitingBookinId());
                         bookingRequestsController.updateStatus(e, "REFUSE");
                     });
-                    hBox.getChildren().addAll(imageView, vBox, spacer, valide, refuse, status);
+                    vBox1.getChildren().addAll(valide, vSpacer, refuse);
+                    hBox.getChildren().addAll(imageView, vBox, spacer, vBox1, status);
                 } else {
                     hBox.getChildren().addAll(imageView, vBox, spacer, status);
                 }
