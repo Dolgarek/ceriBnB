@@ -248,6 +248,7 @@ public class ListSejourController {
                 search();
             } else {
                 filteredResults.clear();
+                sejourListView.setItems(FXCollections.observableArrayList(GlobalData.getInstance().getSejours()));
             }
         });
         // Bind the ListView to the filtered results
