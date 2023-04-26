@@ -307,6 +307,7 @@ public class ListSejourController {
     }
 
     public ObservableList<Sejour> handleBookingRequest(Sejour s) {
+        System.out.println(s.getTitre() + " " + s.getStatus() + " " + s.getImgPath());
         sejours.add(0, s);
         GlobalData.getInstance().setSejours(sejours.stream().toList());
 

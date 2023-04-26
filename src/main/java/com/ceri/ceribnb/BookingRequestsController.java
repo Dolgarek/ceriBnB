@@ -164,6 +164,7 @@ public class BookingRequestsController {
     for (Sejour sejour : GlobalData.getInstance().getOwnSejour()) {
       for (Document doc : reservation.find(eq("sejourId", new ObjectId(sejour.getId())))) {
         Reservation r = new Reservation();
+        r.setObjectId(doc.getObjectId("_id"));
         r.setSejourId(doc.getObjectId("sejourId"));
         r.setUserId(doc.getObjectId("userId"));
         r.setStatus(doc.getString("status"));
@@ -193,9 +194,9 @@ public class BookingRequestsController {
           s.setDateFin(d.getString("dateFin"));
           s.setStatus(doc.getString("status"));
           reservationItems.add(s);
-          System.out.println(r.getSejourId().toString() + " " + GlobalData.getInstance().getReservationId());
-          System.out.println(r.getSejourId().toString().equals(GlobalData.getInstance().getReservationId()));
-          if (r.getSejourId().toString().equals(GlobalData.getInstance().getReservationId())) {
+          System.out.println(r.getObjectId().toString() + " " + GlobalData.getInstance().getReservationId());
+          System.out.println(r.getObjectId().toString().equals(GlobalData.getInstance().getReservationId()));
+          if (r.getObjectId().toString().equals(GlobalData.getInstance().getReservationId())) {
             toBeAdded = s;
           }
         }
