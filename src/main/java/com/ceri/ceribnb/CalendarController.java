@@ -2,11 +2,18 @@ package com.ceri.ceribnb;
 
 import com.ceri.ceribnb.helper.GlobalData;
 import java.io.IOException;
+
+import com.ceri.ceribnb.helper.GraphicalCalendar;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 
 public class CalendarController {
@@ -14,6 +21,17 @@ public class CalendarController {
   private Stage stage;
   private Scene scene;
   private Parent root;
+
+  @FXML
+  private GraphicalCalendar calendar;
+
+  public void initialize() {
+    /*HBox hBox = new HBox();
+    final Region spacer = new Region();
+    HBox.setHgrow(spacer, Priority.ALWAYS);
+    hBox.getChildren().addAll(gc);
+    hBox.setAlignment(Pos.CENTER_LEFT);*/
+  }
 
   public void switchToHomepageScene(ActionEvent event) throws IOException {
     Parent root = null;
