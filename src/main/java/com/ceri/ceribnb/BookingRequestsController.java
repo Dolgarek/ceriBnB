@@ -16,6 +16,7 @@ import com.ceri.ceribnb.helper.ReservationListCell;
 import com.ceri.ceribnb.helper.SejourStatusComparator;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Updates;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -28,6 +29,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.bson.Document;
+import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
 import static com.mongodb.client.model.Filters.eq;
@@ -37,6 +39,8 @@ public class BookingRequestsController {
   private Stage stage;
   private Scene scene;
   private Parent root;
+
+  private int state;
 
   private List<Sejour> reservationItems;
 
@@ -50,6 +54,8 @@ public class BookingRequestsController {
   private Button sort_accepte;
 
   public void initialize() {
+    this.state = 0;
+
     MongoDatabase database = DabatabaseHandler.instanciateDatabase();
     MongoCollection<Document> reservation = database.getCollection("Reservation");
 
@@ -58,12 +64,17 @@ public class BookingRequestsController {
     for (Sejour sejour : GlobalData.getInstance().getOwnSejour()) {
       for (Document doc : reservation.find(eq("sejourId", new ObjectId(sejour.getId())))) {
         Reservation r = new Reservation();
+        r.setObjectId(doc.getObjectId("_id"));
         r.setSejourId(doc.getObjectId("sejourId"));
         r.setUserId(doc.getObjectId("userId"));
         r.setStatus(doc.getString("status"));
         MongoCollection<Document> sejours = database.getCollection("SejourReel");
         for (Document d : sejours.find(eq("_id", r.getSejourId()))) {
           Sejour s = new Sejour();
+          s.setId(d.getObjectId("_id").toString());
+          if (r.getStatus().equals("EN ATTENTE")) {
+            s.setWaitingBookinId(r.getObjectId().toString());
+          }
           s.setTitre(d.getString("titre"));
           s.setImgPath(d.getString("img"));
           File file = new File("/Users/theoquezel-perron/Downloads/" + s.getImgPath());
@@ -82,7 +93,7 @@ public class BookingRequestsController {
     }
     Collections.sort(reservationItems, new SejourStatusComparator());
     reservationListView.setItems(FXCollections.observableArrayList(reservationItems));
-    reservationListView.setCellFactory(resa -> new ReservationListCell());
+    reservationListView.setCellFactory(resa -> new ReservationListCell(true, this));
   }
 
   public void switchToHomepageScene(ActionEvent event) throws IOException {
@@ -111,15 +122,64 @@ public class BookingRequestsController {
   }
 
   public void sortRequestWaiting(ActionEvent e) {
-    Collections.sort(reservationItems, new SejourStatusComparator());
-    reservationListView.setItems(FXCollections.observableArrayList(reservationItems));
-    reservationListView.setCellFactory(resa -> new ReservationListCell());
+    if (this.state == 1) {
+      Collections.sort(reservationItems, new SejourStatusComparator());
+      reservationListView.setItems(FXCollections.observableArrayList(reservationItems));
+      reservationListView.setCellFactory(resa -> new ReservationListCell(true, this));
+      this.state = 0;
+    }
   }
 
   public void sortRequestApproved(ActionEvent e) {
-    Collections.sort(reservationItems, new SejourStatusComparator().reversed());
-    reservationListView.setItems(FXCollections.observableArrayList(reservationItems));
-    reservationListView.setCellFactory(resa -> new ReservationListCell());
+    if (this.state == 0) {
+      Collections.sort(reservationItems, new SejourStatusComparator().reversed());
+      reservationListView.setItems(FXCollections.observableArrayList(reservationItems));
+      reservationListView.setCellFactory(resa -> new ReservationListCell(true, this));
+      this.state = 1;
+    }
+  }
+
+  public void updateStatus(ActionEvent e, String status) {
+    MongoDatabase database = DabatabaseHandler.instanciateDatabase();
+    MongoCollection<Document> reservation = database.getCollection("Reservation");
+    System.out.println(GlobalData.getInstance().getReservationId());
+    Document query = new Document().append("_id", new ObjectId(GlobalData.getInstance().getReservationId()));
+
+    Bson updates = Updates.set("status", status);
+    reservation.updateOne(query, updates);
+
+    reservationItems.clear();
+
+    for (Sejour sejour : GlobalData.getInstance().getOwnSejour()) {
+      for (Document doc : reservation.find(eq("sejourId", new ObjectId(sejour.getId())))) {
+        Reservation r = new Reservation();
+        r.setSejourId(doc.getObjectId("sejourId"));
+        r.setUserId(doc.getObjectId("userId"));
+        r.setStatus(doc.getString("status"));
+        MongoCollection<Document> sejours = database.getCollection("SejourReel");
+        for (Document d : sejours.find(eq("_id", r.getSejourId()))) {
+          Sejour s = new Sejour();
+          s.setTitre(d.getString("titre"));
+          s.setImgPath(d.getString("img"));
+          File file = new File("/Users/theoquezel-perron/Downloads/" + s.getImgPath());
+          if (file.exists()) {
+            Image img = new Image(file.toURI().toString());
+            s.setImage(img);
+          } else {
+            Image img = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/img/Question_mark_(black).png")));
+            s.setImage(img);
+          }
+          s.setPrix(Double.valueOf(d.getString("prix")));
+          s.setStatus(doc.getString("status"));
+          reservationItems.add(s);
+        }
+      }
+    }
+      if (this.state == 0) {
+        sortRequestWaiting(e);
+      } else {
+        sortRequestApproved(e);
+      }
   }
 
   public void logout(ActionEvent e) throws IOException {

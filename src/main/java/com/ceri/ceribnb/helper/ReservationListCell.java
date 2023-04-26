@@ -1,5 +1,6 @@
 package com.ceri.ceribnb.helper;
 
+import com.ceri.ceribnb.BookingRequestsController;
 import com.ceri.ceribnb.CartController;
 import com.ceri.ceribnb.ListSejourController;
 import com.ceri.ceribnb.ReservationController;
@@ -19,14 +20,20 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import org.bson.types.ObjectId;
 
 import java.util.Objects;
 
 public class ReservationListCell extends ListCell<Sejour> {
+
+    private boolean isHost;
     private ListSejourController mainController;
     private ReservationController reservationController;
+    private BookingRequestsController bookingRequestsController;
 
-    public ReservationListCell() {
+    public ReservationListCell(boolean isHost, BookingRequestsController bookingRequestsController) {
+        this.bookingRequestsController = bookingRequestsController;
+        this.isHost = isHost;
     }
 
     @Override
@@ -70,7 +77,25 @@ public class ReservationListCell extends ListCell<Sejour> {
 
             HBox.setMargin(vBox, new Insets(0, 0, 0, 50));
             HBox.setMargin(status, new Insets(0, 0, 0, 50));
-            hBox.getChildren().addAll(imageView, vBox, spacer, status);
+            if (this.isHost) {
+                if (sejour.getStatus().equals("EN ATTENTE")) {
+                    Button valide = new Button("Accepter");
+                    valide.setOnAction(e -> {
+                        GlobalData.getInstance().setReservationId(sejour.getWaitingBookinId());
+                        bookingRequestsController.updateStatus(e, "VALIDE");
+                    });
+                    Button refuse = new Button("Refuser");
+                    refuse.setOnAction(e -> {
+                        GlobalData.getInstance().setReservationId(sejour.getWaitingBookinId());
+                        bookingRequestsController.updateStatus(e, "REFUSE");
+                    });
+                    hBox.getChildren().addAll(imageView, vBox, spacer, valide, refuse, status);
+                } else {
+                    hBox.getChildren().addAll(imageView, vBox, spacer, status);
+                }
+            } else {
+                hBox.getChildren().addAll(imageView, vBox, spacer, status);
+            }
             hBox.setAlignment(Pos.CENTER_LEFT);
             setGraphic(hBox);
         }

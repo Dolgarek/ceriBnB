@@ -51,6 +51,8 @@ public class ListSejourController {
 
     private ObservableList<Sejour> sejours;
 
+    private LoginController loginController;
+
     private Set<Sejour> cartItems = new HashSet<>();
     private Stage stage;
     private Scene scene;
@@ -74,7 +76,11 @@ public class ListSejourController {
     public int state = 0;
 
     public void switchToLoginFormScene(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("login.fxml"));
+        //Parent root = FXMLLoader.load(getClass().getResource("login.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("login.fxml"));
+        Parent root = fxmlLoader.load();
+        loginController = fxmlLoader.getController();
+        loginController.setMainController(this);
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root, 1445, 833);
         stage.setTitle("Connexion");

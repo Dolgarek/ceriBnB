@@ -3,6 +3,7 @@ package com.ceri.ceribnb.helper;
 import com.ceri.ceribnb.entity.Sejour;
 import com.ceri.ceribnb.entity.Utilisateur;
 import javafx.scene.image.Image;
+import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +23,8 @@ public class GlobalData {
     private Sejour details;
 
     private int numberGenerated;
+
+    private String reservationId;
 
     private GlobalData() {}
 
@@ -64,5 +67,9 @@ public class GlobalData {
     public List<Sejour> getOwnSejour() { return ownSejour; }
 
     public void setOwnSejour(List<Sejour> ownSejour) { this.ownSejour = ownSejour; }
+
+    public String getReservationId() { return reservationId; }
+
+    public void setReservationId(String reservationId) { this.reservationId = reservationId; }
 }
 

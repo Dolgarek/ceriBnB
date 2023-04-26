@@ -17,6 +17,7 @@ public class Sejour {
     private Image image;
     private String imgPath;
     private String status;
+    private String waitingBookinId;
 
     public Sejour() {
     }
@@ -134,4 +135,11 @@ public class Sejour {
         this.status = status;
     }
 
+    public String getWaitingBookinId() {
+        return waitingBookinId;
+    }
+
+    public void setWaitingBookinId(String waitingBookinId) {
+        this.waitingBookinId = waitingBookinId;
+    }
 }

@@ -11,9 +11,9 @@ public class SejourStatusComparator implements Comparator<Sejour> {
             return -1;
         } else if (s2.getStatus().equals("EN ATTENTE") && !s1.getStatus().equals("EN ATTENTE")) {
             return 1;
-        } else if (s1.getStatus().equals("ACCEPTE") && s2.getStatus().equals("REFUSE")) {
+        } else if (s1.getStatus().equals("VALIDE") && s2.getStatus().equals("REFUSE")) {
             return -1;
-        } else if (s1.getStatus().equals("REFUSE") && s2.getStatus().equals("ACCEPTE")) {
+        } else if (s1.getStatus().equals("REFUSE") && s2.getStatus().equals("VALIDE")) {
             return 1;
         } else {
             return 0;

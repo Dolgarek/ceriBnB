@@ -157,8 +157,14 @@ public class SejourGenerator {
         }
 
         for (Document doc : sejourCollection.find()) {
-            Document rslt = reservation.find(eq("sejourId", doc.get("_id"))).first();
-            if (rslt == null) {
+            boolean canBeAdded = true;
+
+            for (Document d : reservation.find(eq("sejourId", doc.get("_id")))) {
+                if (d.getString("status").equals("EN ATTENTE") || d.getString("status").equals("VALIDE")) {
+                    canBeAdded = false;
+                }
+            }
+            if (canBeAdded) {
                 Sejour s = new Sejour();
                 File file = new File("/Users/theoquezel-perron/Downloads/" + doc.getString("img"));
                 //Image img = new Image(getClass().getResourceAsStream("/Users/theoquezel-perron/Downloads/" + doc.getString("img")));
