@@ -155,8 +155,13 @@ public class SejourGenerator {
         }
         for (Document doc : paysCollection.find()) {
             ville.add(doc.getString("ville"));
-            pays.add(doc.getString("pays"));
+            if (doc.getString("pays") != null) {
+                pays.add(doc.getString("pays"));
+            }
             descriptions.add(doc.getString("description"));
+        }
+        for (String s : pays) {
+            System.out.println(s);
         }
         for (Document doc : prixCollection.find()) {
             prix.add(Double.valueOf(doc.getString("prix")));
