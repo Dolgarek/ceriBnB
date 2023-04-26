@@ -25,6 +25,7 @@ import java.util.*;
 import javafx.scene.image.Image;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -73,6 +74,9 @@ public class ListSejourController {
 
     @FXML
     private Button authentified_username;
+
+    @FXML
+    private ImageView bell_icon;
 
     public int state = 0;
 
@@ -168,12 +172,28 @@ public class ListSejourController {
                 }
             });
         }
+
         if (all_sejour != null) {
             all_sejour.setOnAction(e -> displayAllSejour(e));
         }
         if (my_sejour != null) {
             my_sejour.setOnAction(e -> displayMySejour(e));
         }
+
+        if (bell_icon != null) {
+            MongoDatabase database = DabatabaseHandler.instanciateDatabase();
+            MongoCollection<Document> reservation = database.getCollection("Reservation");
+
+            for (Sejour sejour : GlobalData.getInstance().getOwnSejour()) {
+                for (Document doc : reservation.find(eq("sejourId", new ObjectId(sejour.getId())))) {
+                    if (doc.getString("status").equals("EN ATTENTE")) {
+                        Image image = new Image(getClass().getResourceAsStream("/icon/notification.png"));
+                        bell_icon.setImage(image);
+                    }
+                }
+            }
+        }
+
         if (authentified_username != null) {
             authentified_username.setOnAction(e -> {
                 try {
