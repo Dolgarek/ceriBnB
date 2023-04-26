@@ -75,7 +75,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Button fx:id="authentified_username" alignment="BOTTOM_LEFT" mnemonicParsing="false" onAction="#logout" prefHeight="70.0" prefWidth="77.0" style="-fx-alignment: bottom-left; -fx-content-display: top; -fx-background-color: transparent;" text="Username TODO" textAlignment="CENTER" textFill="WHITE">
+            <Button fx:id="authentified_username" alignment="BOTTOM_LEFT" mnemonicParsing="false" onAction="#logout" prefHeight="70.0" prefWidth="77.0" style="-fx-alignment: bottom-left; -fx-content-display: top; -fx-background-color: transparent;" text="Déconnexion" textAlignment="CENTER" textFill="WHITE">
                <graphic>
                   <ImageView fx:id="authentified_user_image" fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                      <image>
