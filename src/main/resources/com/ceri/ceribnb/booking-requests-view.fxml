@@ -11,6 +11,7 @@
 <?import javafx.scene.text.Font?>
 
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.VBox?>
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="833.0" prefWidth="1445.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ceri.ceribnb.BookingRequestsController">
    <top>
       <HBox prefHeight="64.0" prefWidth="1452.0" style="-fx-background-color: #2c4186;" BorderPane.alignment="CENTER">
@@ -93,6 +94,39 @@
       </HBox>
    </top>
    <center>
-      <ListView fx:id="reservationListView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox prefHeight="35.0" prefWidth="1445.0">
+               <children>
+                  <Button fx:id="sort_attente" onAction="#sortRequestWaiting" mnemonicParsing="false" prefHeight="35.0" prefWidth="722.0" text="Trié par demandes en cours">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <Button fx:id="sort_accepte" onAction="#sortRequestApproved" mnemonicParsing="false" prefHeight="35.0" prefWidth="722.0" text="Trié par séjour accepté">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="1.0" />
+                     </HBox.margin>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+               </children>
+               <VBox.margin>
+                  <Insets left="5.0" right="5.0" top="5.0" />
+               </VBox.margin>
+            </HBox>
+            <ListView fx:id="reservationListView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+         </children>
+      </VBox>
    </center>
 </BorderPane>

@@ -8,10 +8,12 @@ import com.ceri.ceribnb.helper.GlobalData;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
 import com.ceri.ceribnb.helper.ReservationListCell;
+import com.ceri.ceribnb.helper.SejourStatusComparator;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import javafx.collections.FXCollections;
@@ -21,6 +23,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
@@ -39,6 +42,12 @@ public class BookingRequestsController {
 
   @FXML
   private ListView<Sejour> reservationListView;
+
+  @FXML
+  private Button sort_attente;
+
+  @FXML
+  private Button sort_accepte;
 
   public void initialize() {
     MongoDatabase database = DabatabaseHandler.instanciateDatabase();
@@ -71,7 +80,7 @@ public class BookingRequestsController {
         }
       }
     }
-    System.out.println(reservationItems.size());
+    Collections.sort(reservationItems, new SejourStatusComparator());
     reservationListView.setItems(FXCollections.observableArrayList(reservationItems));
     reservationListView.setCellFactory(resa -> new ReservationListCell());
   }
@@ -99,6 +108,18 @@ public class BookingRequestsController {
     stage.setTitle("Calendrier");
     stage.setScene(scene);
     stage.show();
+  }
+
+  public void sortRequestWaiting(ActionEvent e) {
+    Collections.sort(reservationItems, new SejourStatusComparator());
+    reservationListView.setItems(FXCollections.observableArrayList(reservationItems));
+    reservationListView.setCellFactory(resa -> new ReservationListCell());
+  }
+
+  public void sortRequestApproved(ActionEvent e) {
+    Collections.sort(reservationItems, new SejourStatusComparator().reversed());
+    reservationListView.setItems(FXCollections.observableArrayList(reservationItems));
+    reservationListView.setCellFactory(resa -> new ReservationListCell());
   }
 
   public void logout(ActionEvent e) throws IOException {
