@@ -192,6 +192,9 @@ public class BookingRequestsController {
           s.setDateDebut(d.getString("dateDebut"));
           s.setDateFin(d.getString("dateFin"));
           s.setStatus(doc.getString("status"));
+          if (r.getStatus().equals("EN ATTENTE")) {
+            s.setWaitingBookinId(r.getObjectId().toString());
+          }
           reservationItems.add(s);
           if (r.getObjectId().toString().equals(GlobalData.getInstance().getReservationId())) {
             toBeAdded = s;
