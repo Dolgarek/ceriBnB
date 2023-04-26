@@ -6,8 +6,11 @@ import com.ceri.ceribnb.entity.Sejour;
 import com.ceri.ceribnb.entity.Utilisateur;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,6 +25,7 @@ import javafx.scene.control.ListView;
 import java.io.IOException;
 import java.util.*;
 
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -36,6 +40,8 @@ import static com.mongodb.client.model.Filters.eq;
 
 public class ListSejourController {
 
+    @FXML
+    public TextField searchField;
     @FXML
     private ListView<Sejour> sejourListView;
     private List<Image> images = new ArrayList<>();
@@ -147,6 +153,10 @@ public class ListSejourController {
         stage.setScene(scene);
         stage.show();
     }
+
+    private ObservableList<Sejour> allResults = FXCollections.observableArrayList();
+    private List<Sejour> filteredResults = new ArrayList<>();
+    private SimpleStringProperty searchQuery = new SimpleStringProperty("");
     
     public void initialize() {
         //TODO: Supprimer après;
@@ -228,7 +238,58 @@ public class ListSejourController {
         sejourListView.setItems(sejours);
         sejourListView.setCellFactory(sejour -> new SejourListCell(this, cartController, false));
 
-        System.out.println("Hello test");
+        allResults = sejourListView.getItems();
+        // Bind the search field to the search query property
+        searchField.textProperty().bindBidirectional(searchQuery);
+        // Bind the filtered results to the search query
+        searchQuery.addListener((observable, oldValue, newValue) -> {
+            // Only trigger a search if the query has more than 2 characters
+            if (newValue.length() >= 2) {
+                search();
+            } else {
+                filteredResults.clear();
+            }
+        });
+        // Bind the ListView to the filtered results
+        //sejourListView.setItems(filteredResults);
+    }
+
+    private void search() {
+        // Create a task to perform the search in a background thread
+        Task<Void> task = new Task<>() {
+            @Override
+            protected Void call() throws Exception {
+                String query = searchQuery.get().toLowerCase();
+
+                // Clear the filtered results
+                filteredResults.clear();
+                //System.out.println(query);
+                // Add the results that match the query
+                for (Sejour sejour : allResults) {
+                    //sejour.getHote().getNom().toLowerCase().contains(query) ||
+                    //sejour.getHote().getPrenom().toLowerCase().contains(query) ||
+                    //sejour.getHote().getMail().toLowerCase().contains(query) ||
+                    //String.valueOf(sejour.getPrix()).toLowerCase().contains(query) ||
+                    if (sejour.getTitre().toLowerCase().contains(query) ||
+                        sejour.getDescription().toLowerCase().contains(query) ||
+                        sejour.getVille().toLowerCase().contains(query) ||
+                        sejour.getCodeZip() .toLowerCase().contains(query) ||
+                        sejour.getAdresse() .toLowerCase().contains(query) ||
+                        sejour.getPays().toLowerCase().contains(query) ||
+                        String.valueOf(sejour.getPrix()).toLowerCase().contains(query) ||
+                        sejour.getDateDebut().toLowerCase().contains(query) ||
+                        sejour.getDateFin().toLowerCase().contains(query)) {
+                        //System.out.println(sejour.getPays());
+                        filteredResults.add(sejour);
+                    }
+                }
+                Platform.runLater(() -> sejourListView.setItems(FXCollections.observableArrayList(filteredResults)));
+                return null;
+            }
+        };
+
+        // Run the task in a background thread
+        new Thread(task).start();
     }
 
     public Image getRandomImage() {

@@ -30,7 +30,7 @@
                         <Insets top="20.0" />
                     </HBox.margin>
                 </TextField>
-                <Button disable="true" mnemonicParsing="false" prefHeight="26.0">
+                <Button disable="true" mnemonicParsing="false" prefHeight="26.0" visible="false">
                     <HBox.margin>
                         <Insets top="20.0" />
                     </HBox.margin>
@@ -75,7 +75,7 @@
                         <Cursor fx:constant="HAND" />
                     </cursor>
                 </Button>
-                <Button fx:id="authentified_username" onAction="#logout" alignment="BOTTOM_LEFT" mnemonicParsing="false" prefHeight="70.0" prefWidth="77.0" style="-fx-alignment: bottom-left; -fx-content-display: top; -fx-background-color: transparent;" text="Déconnexion" textAlignment="CENTER">
+                <Button fx:id="authentified_username" alignment="BOTTOM_LEFT" mnemonicParsing="false" onAction="#logout" prefHeight="70.0" prefWidth="77.0" style="-fx-alignment: bottom-left; -fx-content-display: top; -fx-background-color: transparent;" text="Déconnexion" textAlignment="CENTER">
                     <graphic>
                         <ImageView fx:id="authentified_user_image" fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                             <image>
