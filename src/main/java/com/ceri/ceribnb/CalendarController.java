@@ -1,9 +1,13 @@
 package com.ceri.ceribnb;
 
+import com.ceri.ceribnb.entity.Sejour;
+import com.ceri.ceribnb.helper.DabatabaseHandler;
 import com.ceri.ceribnb.helper.GlobalData;
 import java.io.IOException;
 
 import com.ceri.ceribnb.helper.GraphicalCalendar;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,10 +15,16 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.stage.Stage;
+import org.bson.Document;
+import org.bson.types.ObjectId;
+
+import static com.mongodb.client.model.Filters.eq;
 
 public class CalendarController {
 
@@ -28,12 +38,24 @@ public class CalendarController {
   @FXML
   private GraphicalCalendar calendar;
 
+  @FXML
+  private ImageView bell_icon;
+
+
   public void initialize() {
-    /*HBox hBox = new HBox();
-    final Region spacer = new Region();
-    HBox.setHgrow(spacer, Priority.ALWAYS);
-    hBox.getChildren().addAll(gc);
-    hBox.setAlignment(Pos.CENTER_LEFT);*/
+    if (bell_icon != null) {
+      MongoDatabase database = DabatabaseHandler.instanciateDatabase();
+      MongoCollection<Document> reservation = database.getCollection("Reservation");
+
+      for (Sejour sejour : GlobalData.getInstance().getOwnSejour()) {
+        for (Document doc : reservation.find(eq("sejourId", new ObjectId(sejour.getId())))) {
+          if (doc.getString("status").equals("EN ATTENTE")) {
+            Image image = new Image(getClass().getResourceAsStream("/icon/notification.png"));
+            bell_icon.setImage(image);
+          }
+        }
+      }
+    }
   }
 
   public void switchToHomepageScene(ActionEvent event) throws IOException {
