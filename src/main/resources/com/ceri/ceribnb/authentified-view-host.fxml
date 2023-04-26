@@ -30,7 +30,7 @@
                   <Insets top="20.0" />
                </HBox.margin>
             </TextField>
-            <Button mnemonicParsing="false" prefHeight="26.0">
+            <Button mnemonicParsing="false" prefHeight="26.0" visible="false">
                <HBox.margin>
                   <Insets top="20.0" />
                </HBox.margin>
