@@ -26,9 +26,7 @@ public class ReservationListCell extends ListCell<Sejour> {
     private ListSejourController mainController;
     private ReservationController reservationController;
 
-    public ReservationListCell(ListSejourController mainController, ReservationController reservationController) {
-        this.mainController = mainController;
-        this.reservationController = reservationController;
+    public ReservationListCell() {
     }
 
     @Override
