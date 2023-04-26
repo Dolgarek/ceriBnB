@@ -42,6 +42,10 @@ public class LoginController {
     private Scene scene;
     private Parent root;
 
+    private DetailController detailController;
+
+    private ListSejourController mainController;
+
     public void switchToHomepageScene(ActionEvent event) throws IOException {
         GlobalData.getInstance().setDetails(null);
         Parent root = null;
@@ -102,9 +106,17 @@ public class LoginController {
         } else {
             // Load the new FXML file
             if (GlobalData.getInstance().getLoggedInUser().getRole().equals("hote")) {
-                root = FXMLLoader.load(getClass().getResource("detail-view-host.fxml"));
+                //root = FXMLLoader.load(getClass().getResource("detail-view-host.fxml"));
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("detail-view-host.fxml"));
+                root = fxmlLoader.load();
+                detailController = fxmlLoader.getController();
+                detailController.setMainController(this.mainController);
             } else if (GlobalData.getInstance().getLoggedInUser().getRole().equals("voyageur")) {
-                root = FXMLLoader.load(getClass().getResource("detail-view.fxml"));
+                //root = FXMLLoader.load(getClass().getResource("detail-view.fxml"));
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("detail-view.fxml"));
+                root = fxmlLoader.load();
+                detailController = fxmlLoader.getController();
+                detailController.setMainController(this.mainController);
             }
         }
 
@@ -117,5 +129,9 @@ public class LoginController {
         // Set the new scene to the current stage
         currentStage.setScene(homepageAuthentified);
         currentStage.show();
+    }
+
+    public void setMainController(ListSejourController listSejourController) {
+        this.mainController = listSejourController;
     }
 }

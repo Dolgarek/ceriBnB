@@ -102,7 +102,7 @@ public class ReservationController {
             }
         }
         resaListView.setItems(FXCollections.observableArrayList(reservationItems));
-        resaListView.setCellFactory(resa -> new ReservationListCell(mainController, this));
+        resaListView.setCellFactory(resa -> new ReservationListCell(false, null));
     };
 
     public void logout(ActionEvent e) throws IOException {

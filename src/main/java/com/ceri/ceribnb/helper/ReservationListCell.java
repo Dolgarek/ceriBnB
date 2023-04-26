@@ -1,5 +1,6 @@
 package com.ceri.ceribnb.helper;
 
+import com.ceri.ceribnb.BookingRequestsController;
 import com.ceri.ceribnb.CartController;
 import com.ceri.ceribnb.ListSejourController;
 import com.ceri.ceribnb.ReservationController;
@@ -19,16 +20,20 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import org.bson.types.ObjectId;
 
 import java.util.Objects;
 
 public class ReservationListCell extends ListCell<Sejour> {
+
+    private boolean isHost;
     private ListSejourController mainController;
     private ReservationController reservationController;
+    private BookingRequestsController bookingRequestsController;
 
-    public ReservationListCell(ListSejourController mainController, ReservationController reservationController) {
-        this.mainController = mainController;
-        this.reservationController = reservationController;
+    public ReservationListCell(boolean isHost, BookingRequestsController bookingRequestsController) {
+        this.bookingRequestsController = bookingRequestsController;
+        this.isHost = isHost;
     }
 
     @Override
@@ -58,6 +63,9 @@ public class ReservationListCell extends ListCell<Sejour> {
             final Region spacer = new Region();
             HBox.setHgrow(spacer, Priority.ALWAYS);
 
+            final Region vSpacer = new Region();
+            HBox.setMargin(spacer, new Insets(10));
+
             if (Objects.equals(sejour.getStatus(), "REFUSE")) {
                 status.setTextFill(Color.RED);
             } else if (Objects.equals(sejour.getStatus(), "EN ATTENTE")){
@@ -72,7 +80,31 @@ public class ReservationListCell extends ListCell<Sejour> {
 
             HBox.setMargin(vBox, new Insets(0, 0, 0, 50));
             HBox.setMargin(status, new Insets(0, 0, 0, 50));
-            hBox.getChildren().addAll(imageView, vBox, spacer, status);
+            if (this.isHost) {
+                VBox vBox1 = new VBox();
+                vBox1.setMaxSize(VBox.USE_PREF_SIZE, VBox.USE_PREF_SIZE);
+                vBox1.setAlignment(Pos.CENTER);
+                if (sejour.getStatus().equals("EN ATTENTE")) {
+                    Button valide = new Button("Accepter");
+                    vBox1.setSpacing(5);
+                    valide.setOnAction(e -> {
+                        GlobalData.getInstance().setReservationId(sejour.getWaitingBookinId());
+                        bookingRequestsController.updateStatus(e, "VALIDE");
+                    });
+                    Button refuse = new Button("Refuser");
+                    refuse.setMinWidth(valide.getWidth());
+                    refuse.setOnAction(e -> {
+                        GlobalData.getInstance().setReservationId(sejour.getWaitingBookinId());
+                        bookingRequestsController.updateStatus(e, "REFUSE");
+                    });
+                    vBox1.getChildren().addAll(valide, vSpacer, refuse);
+                    hBox.getChildren().addAll(imageView, vBox, spacer, vBox1, status);
+                } else {
+                    hBox.getChildren().addAll(imageView, vBox, spacer, status);
+                }
+            } else {
+                hBox.getChildren().addAll(imageView, vBox, spacer, status);
+            }
             hBox.setAlignment(Pos.CENTER_LEFT);
             setGraphic(hBox);
         }

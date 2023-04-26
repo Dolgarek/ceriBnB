@@ -67,43 +67,34 @@ public class SejourGenerator {
         Calendar c = Calendar.getInstance();
         c.setTime(date);
 
-        MongoCollection<Document> adresseCollection = database.getCollection(FIXTURE_ADRESSE);
-        MongoCollection<Document> codeZipCollection = database.getCollection(FIXTURE_CODEZIP);
-        MongoCollection<Document> paysCollection = database.getCollection(FIXTURE_PAYS);
-        MongoCollection<Document> prixCollection = database.getCollection(FIXTURE_PRIX);
-        MongoCollection<Document> titreCollection = database.getCollection(FIXTURE_TITRE);
         MongoCollection<Document> sejourCollection = database.getCollection(SEJOUR_REEL);
-        MongoCollection<Document> reservation = database.getCollection(RESERVATION);
 
         for (Document doc : sejourCollection.find(eq("hoteId", objectId))) {
-            Document rslt = reservation.find(eq("sejourId", doc.get("_id"))).first();
-            if (rslt == null) {
-                Sejour s = new Sejour();
-                File file = new File("/Users/theoquezel-perron/Downloads/" + doc.getString("img"));
-                //Image img = new Image(getClass().getResourceAsStream("/Users/theoquezel-perron/Downloads/" + doc.getString("img")));
-                //s.setImage(img);
-                if (file.exists()) {
-                    Image img = new Image(file.toURI().toString());
-                    s.setImage(img);
-                    s.setImgPath(doc.getString("img"));
-                } else {
-                    Image img = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/img/Question_mark_(black).png")));
-                    s.setImage(img);
-                    s.setImgPath(doc.getString("img"));
-                }
-                s.setId(doc.getObjectId("_id").toString());
-                s.setAdresse(doc.getString("adresse"));
-                s.setDescription(doc.getString("description"));
-                s.setTitre(doc.getString("titre"));
-                s.setHote(GlobalData.getInstance().getLoggedInUser());
-                s.setPays(doc.getString("Pays"));
-                s.setVille(doc.getString("ville"));
-                s.setPrix(Double.valueOf(doc.getString("prix")));
-                s.setCodeZip(doc.getString("codeZip"));
-                s.setDateDebut(doc.getString("dateDebut"));
-                s.setDateFin(doc.getString("dateFin"));
-                sejoursGeneres.add(s);
+            Sejour s = new Sejour();
+            File file = new File("/Users/theoquezel-perron/Downloads/" + doc.getString("img"));
+            //Image img = new Image(getClass().getResourceAsStream("/Users/theoquezel-perron/Downloads/" + doc.getString("img")));
+            //s.setImage(img);
+            if (file.exists()) {
+                Image img = new Image(file.toURI().toString());
+                s.setImage(img);
+                s.setImgPath(doc.getString("img"));
+            } else {
+                Image img = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/img/Question_mark_(black).png")));
+                s.setImage(img);
+                s.setImgPath(doc.getString("img"));
             }
+            s.setId(doc.getObjectId("_id").toString());
+            s.setAdresse(doc.getString("adresse"));
+            s.setDescription(doc.getString("description"));
+            s.setTitre(doc.getString("titre"));
+            s.setHote(GlobalData.getInstance().getLoggedInUser());
+            s.setPays(doc.getString("Pays"));
+            s.setVille(doc.getString("ville"));
+            s.setPrix(Double.valueOf(doc.getString("prix")));
+            s.setCodeZip(doc.getString("codeZip"));
+            s.setDateDebut(doc.getString("dateDebut"));
+            s.setDateFin(doc.getString("dateFin"));
+            sejoursGeneres.add(s);
         }
         return sejoursGeneres;
     }
@@ -171,8 +162,14 @@ public class SejourGenerator {
         }
 
         for (Document doc : sejourCollection.find()) {
-            Document rslt = reservation.find(eq("sejourId", doc.get("_id"))).first();
-            if (rslt == null) {
+            boolean canBeAdded = true;
+
+            for (Document d : reservation.find(eq("sejourId", doc.get("_id")))) {
+                if (d.getString("status").equals("EN ATTENTE") || d.getString("status").equals("VALIDE")) {
+                    canBeAdded = false;
+                }
+            }
+            if (canBeAdded) {
                 Sejour s = new Sejour();
                 File file = new File("/Users/theoquezel-perron/Downloads/" + doc.getString("img"));
                 //Image img = new Image(getClass().getResourceAsStream("/Users/theoquezel-perron/Downloads/" + doc.getString("img")));
