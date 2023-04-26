@@ -74,7 +74,7 @@ public class LoginController {
         if (utilisateur != null) {
             // Connecter l'utilisateur et ouvrir la fenêtre principale
             GlobalData.getInstance().setLoggedInUser(utilisateur);
-            if (utilisateur.getRole() == "hote") {
+            if (utilisateur.getRole().equals("hote")) {
                 SejourGenerator sg = new SejourGenerator();
                 GlobalData.getInstance().setOwnSejour(sg.getSejourReelByUser(new ObjectId(utilisateur.getId())));
                 System.out.println(GlobalData.getInstance().getOwnSejour().size());
