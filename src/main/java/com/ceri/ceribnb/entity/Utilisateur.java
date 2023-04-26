@@ -143,9 +143,6 @@ public class Utilisateur {
         for (Document doc: collection.find(query) ) {
             u = new Utilisateur(doc.getObjectId("_id").toString(), doc.getString("mail"), doc.getString("nom"), doc.getString("prenom"), doc.getString("adresse"), doc.getString("ville"), doc.getString("codeZip"), doc.getString("pays"), doc.getString("role"), doc.getString("password"));
         }
-        if (u != null) {
-            System.out.println(u.getNom());
-        }
         return u;
     }
 }

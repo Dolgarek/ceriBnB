@@ -153,7 +153,6 @@ public class BookingRequestsController {
     Sejour toBeAdded = null;
     MongoDatabase database = DabatabaseHandler.instanciateDatabase();
     MongoCollection<Document> reservation = database.getCollection("Reservation");
-    System.out.println(GlobalData.getInstance().getReservationId());
     Document query = new Document().append("_id", new ObjectId(GlobalData.getInstance().getReservationId()));
 
     Bson updates = Updates.set("status", status);
@@ -194,8 +193,6 @@ public class BookingRequestsController {
           s.setDateFin(d.getString("dateFin"));
           s.setStatus(doc.getString("status"));
           reservationItems.add(s);
-          System.out.println(r.getObjectId().toString() + " " + GlobalData.getInstance().getReservationId());
-          System.out.println(r.getObjectId().toString().equals(GlobalData.getInstance().getReservationId()));
           if (r.getObjectId().toString().equals(GlobalData.getInstance().getReservationId())) {
             toBeAdded = s;
           }

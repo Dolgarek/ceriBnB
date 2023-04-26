@@ -219,8 +219,6 @@ public class DetailController {
     Date date = new Date();
 
     if (titleComms.getText().length() != 0 && contentComms.getText().length() != 0) {
-      System.out.println("Titre: " + titleComms.getText() + " " + titleComms.getText().length());
-      System.out.println("Corps: " + contentComms.getText() + " " + contentComms.getText().length());
       doc.append("_id", new ObjectId());
       if (current.getId().length() <= 5) {
         Document d2 = new Document();

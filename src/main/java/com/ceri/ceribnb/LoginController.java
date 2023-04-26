@@ -77,7 +77,6 @@ public class LoginController {
             if (utilisateur.getRole().equals("hote")) {
                 SejourGenerator sg = new SejourGenerator();
                 GlobalData.getInstance().setOwnSejour(sg.getSejourReelByUser(new ObjectId(utilisateur.getId())));
-                System.out.println(GlobalData.getInstance().getOwnSejour().size());
             }
             ouvrirFenetrePrincipale(event);
         } else {
