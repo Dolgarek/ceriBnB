@@ -7,5 +7,7 @@
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ceri.ceribnb.ListSejourController">
    <children>
       <ListView fx:id="sejourListView"/>
+      <Button fx:id="cartButton" text="Panier" onAction="#showCart" />
+      <Button fx:id="reservationButton" text="Mes Réservation" onAction="#showReservation" />
    </children>
 </AnchorPane>

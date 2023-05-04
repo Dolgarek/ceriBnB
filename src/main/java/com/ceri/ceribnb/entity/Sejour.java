@@ -3,7 +3,7 @@ package com.ceri.ceribnb.entity;
 import javafx.scene.image.Image;
 
 public class Sejour {
-    private String id;
+    public String id;
     private String titre;
     private String description;
     private String adresse;
@@ -11,8 +11,13 @@ public class Sejour {
     private String dateDebut;
     private String dateFin;
     private Utilisateur hote;
-
+    private String codeZip;
+    private String ville;
+    private String pays;
     private Image image;
+    private String imgPath;
+    private String status;
+    private String waitingBookinId;
 
     public Sejour() {
     }
@@ -87,5 +92,54 @@ public class Sejour {
 
     public void setImage(Image image) {
         this.image = image;
+    }
+
+    public String getVille() {
+        return ville;
+    }
+
+    public void setVille(String ville) {
+        this.ville = ville;
+    }
+
+    public String getPays() {
+        return pays;
+    }
+
+    public void setPays(String pays) {
+        this.pays = pays;
+    }
+
+    public String getCodeZip() {
+        return codeZip;
+    }
+
+    public void setCodeZip(String codeZip) {
+        this.codeZip = codeZip;
+    }
+
+
+    public String getImgPath() {
+        return imgPath;
+    }
+
+    public void setImgPath(String imgPath) {
+        this.imgPath = imgPath;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getWaitingBookinId() {
+        return waitingBookinId;
+    }
+
+    public void setWaitingBookinId(String waitingBookinId) {
+        this.waitingBookinId = waitingBookinId;
     }
 }

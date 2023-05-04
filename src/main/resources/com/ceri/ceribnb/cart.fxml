@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="833.0" prefWidth="1445.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ceri.ceribnb.CartController">
+    <top>
+        <HBox prefHeight="64.0" prefWidth="1452.0" style="-fx-background-color: #d85d4d;" BorderPane.alignment="CENTER">
+            <children>
+            <Button mnemonicParsing="false" onAction="#switchToHomepageScene" prefHeight="70.0" prefWidth="127.0" style="-fx-background-color: transparent;" text="CeriBnB" textFill="WHITE">
+               <font>
+                  <Font size="24.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+                <HBox prefHeight="64.0" prefWidth="170.0" />
+                <TextField alignment="CENTER" disable="true" prefHeight="27.0" prefWidth="850.0" promptText="Recherche">
+                    <HBox.margin>
+                        <Insets top="20.0" />
+                    </HBox.margin>
+                </TextField>
+                <Button disable="true" mnemonicParsing="false" prefHeight="26.0" visible="false">
+                    <HBox.margin>
+                        <Insets top="20.0" />
+                    </HBox.margin>
+                    <graphic>
+                        <ImageView fitHeight="150.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../../../icon/loupe-icone.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                </Button>
+                <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#switchToListReservationScene" prefHeight="64.0" prefWidth="120.0" style="-fx-background-color: transparent; -fx-alignment: bottom-center; -fx-content-display: top;" text="Réservations" textAlignment="CENTER">
+                    <HBox.margin>
+                        <Insets left="5.0" />
+                    </HBox.margin>
+                    <graphic>
+                        <ImageView fitHeight="26.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../../../icon/bookmark.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                </Button>
+                <Button mnemonicParsing="false" prefHeight="64.0" prefWidth="55.0" style="-fx-background-color: transparent; -fx-alignment: bottom-left; -fx-content-display: top;" text="Panier">
+                    <HBox.margin>
+                        <Insets right="5.0" />
+                    </HBox.margin>
+                    <graphic>
+                        <ImageView fitHeight="26.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../../../icon/cart.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+                </Button>
+                <Button fx:id="authentified_username" alignment="BOTTOM_LEFT" mnemonicParsing="false" onAction="#logout" prefHeight="70.0" prefWidth="77.0" style="-fx-alignment: bottom-left; -fx-content-display: top; -fx-background-color: transparent;" text="Déconnexion" textAlignment="CENTER">
+                    <graphic>
+                        <ImageView fx:id="authentified_user_image" fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../../../icon/logout.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                    <HBox.margin>
+                        <Insets right="8.0" />
+                    </HBox.margin>
+                </Button>
+            </children>
+        </HBox>
+    </top>
+    <center>
+        <VBox fx:id="vbox">
+            <ListView fx:id="cartListView" prefHeight="680.0" prefWidth="1425.0" />
+         <HBox prefHeight="100.0" prefWidth="200.0">
+            <children>
+                  <Button fx:id="closeButton" onAction="#switchToHomepageScene" prefHeight="35.0" prefWidth="227.0" text="Retour à la liste des séjours">
+                  <font>
+                     <Font size="18.0" />
+                  </font>
+                  <HBox.margin>
+                     <Insets top="5.0" />
+                  </HBox.margin>
+               </Button>
+               <Region prefHeight="100.0" prefWidth="1013.0" />
+                  <Button fx:id="validateOrderButton" onAction="#validateOrder" prefHeight="35.0" prefWidth="185.0" text="Valider la commande">
+                  <font>
+                     <Font size="18.0" />
+                  </font>
+                  <HBox.margin>
+                     <Insets top="5.0" />
+                  </HBox.margin>
+               </Button>
+            </children>
+         </HBox>
+            <padding>
+                <Insets bottom="10" left="10" right="10" top="10" />
+            </padding>
+        </VBox>
+    </center>
+</BorderPane>
