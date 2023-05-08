@@ -91,6 +91,7 @@ public class GraphicalCalendar extends BorderPane {
             for(Sejour s : hostSejour) {
                 Date before = sourceFormat.parse(s.getDateDebut());
                 Date after = sourceFormat.parse(s.getDateFin());
+                System.out.println("Sejour (" + s.getId() + "): " + s.getStatus());
 
                 if (before.before(checkDate) && after.after(checkDate) && s.getStatus() != null) {
                     if (s.getStatus().equals("VALIDE")) {
