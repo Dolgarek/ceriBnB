@@ -68,6 +68,7 @@ public class SejourGenerator {
         c.setTime(date);
 
         MongoCollection<Document> sejourCollection = database.getCollection(SEJOUR_REEL);
+        MongoCollection<Document> reservation = database.getCollection(RESERVATION);
 
         for (Document doc : sejourCollection.find(eq("hoteId", objectId))) {
             Sejour s = new Sejour();
@@ -94,6 +95,11 @@ public class SejourGenerator {
             s.setCodeZip(doc.getString("codeZip"));
             s.setDateDebut(doc.getString("dateDebut"));
             s.setDateFin(doc.getString("dateFin"));
+            for (Document d : reservation.find(eq("sejourId", doc.getObjectId("_id")))) {
+                if (d.getString("status").equals("EN ATTENTE")) {
+                    s.setStatus("EN ATTENTE");
+                }
+            }
             sejoursGeneres.add(s);
         }
         return sejoursGeneres;
