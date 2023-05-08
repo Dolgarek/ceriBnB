@@ -2,8 +2,7 @@ package com.ceri.ceribnb;
 
 import com.ceri.ceribnb.entity.Reservation;
 import com.ceri.ceribnb.entity.Sejour;
-import com.ceri.ceribnb.helper.DabatabaseHandler;
-import com.ceri.ceribnb.helper.GlobalData;
+import com.ceri.ceribnb.helper.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,8 +11,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import com.ceri.ceribnb.helper.ReservationListCell;
-import com.ceri.ceribnb.helper.SejourStatusComparator;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Updates;
@@ -150,6 +147,7 @@ public class BookingRequestsController {
   }
 
   public void updateStatus(ActionEvent e, String status) {
+    SejourGenerator sg = new SejourGenerator();
     Sejour toBeAdded = null;
     MongoDatabase database = DabatabaseHandler.instanciateDatabase();
     MongoCollection<Document> reservation = database.getCollection("Reservation");
@@ -205,6 +203,8 @@ public class BookingRequestsController {
     //System.out.println(toBeAdded.getTitre());
     if (status.equals("REFUSE") && toBeAdded != null) {
       mainController.handleBookingRequest(toBeAdded);
+    } else {
+      GlobalData.getInstance().setOwnSejour(sg.getSejourReelByUser(new ObjectId(GlobalData.getInstance().getLoggedInUser().getId())));
     }
     state = 1;
     sortRequestWaiting(e);
