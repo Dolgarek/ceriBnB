@@ -92,7 +92,7 @@ public class GraphicalCalendar extends BorderPane {
                 Date before = sourceFormat.parse(s.getDateDebut());
                 Date after = sourceFormat.parse(s.getDateFin());
 
-                if (before.before(checkDate) && after.after(checkDate) && s.getStatus().equals("EN ATTENTE")) {
+                if (before.before(checkDate) && after.after(checkDate) && s.getStatus().equals("VALIDE")) {
                     tDate.setFill(Color.RED);
                 }
             }

@@ -96,8 +96,8 @@ public class SejourGenerator {
             s.setDateDebut(doc.getString("dateDebut"));
             s.setDateFin(doc.getString("dateFin"));
             for (Document d : reservation.find(eq("sejourId", doc.getObjectId("_id")))) {
-                if (d.getString("status").equals("EN ATTENTE")) {
-                    s.setStatus("EN ATTENTE");
+                if (d.getString("status").equals("VALIDE")) {
+                    s.setStatus("VALIDE");
                 }
             }
             sejoursGeneres.add(s);
